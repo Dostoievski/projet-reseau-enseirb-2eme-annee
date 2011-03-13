@@ -4,7 +4,9 @@ L’objectif de ce projet est de développer un outil d’analyse de trafic sur 
 
 = Première partie du projet : Définir le protocole entre le serveur et le client=
 Pour ce faire, deux solutions nous ont été avancées :
+
 *Solution 1:*
+
 -Le serveur écrit des fichiers contenant les paquets captés(on aura donc une liste des paquets).
 -
  
