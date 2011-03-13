@@ -7,6 +7,17 @@ Pour ce faire, deux solutions nous ont été avancées :
 
 *Solution 1:*
 
--Le serveur écrit des fichiers contenant les paquets captés(on aura donc une liste des paquets).\\
--
+-Le serveur écrit des fichiers contenant les paquets captés(on aura donc une liste des paquets).
+
+-FTP like
+
+*Solution 2:*
+
+-Le client fait une requette de préfiltrage au serveur
+
+-Le serveur capture les paquets correspondant et les écrit dans un fichier(un fichier par client)
+
+-Le client récupère le fichier et l'analyse
+
+  
  
