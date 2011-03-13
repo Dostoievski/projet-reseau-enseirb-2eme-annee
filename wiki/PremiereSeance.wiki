@@ -20,11 +20,13 @@ Pour ce faire, deux solutions nous ont été avancées :
 -Le client récupère le fichier et l'analyse
 
 *Solution choisie*
+
 Nous avons opté pour la première solution.Pour ce qui concerne la première prtie du projet, le travail se divise en deux étapes:
 
 1)Créer le serveur:
 
   -capturer des paquets
+
   -écriture des ces fichiers dans des fichiers(par exemple un fichier est crée chauqe minute)
 
 2)client:
