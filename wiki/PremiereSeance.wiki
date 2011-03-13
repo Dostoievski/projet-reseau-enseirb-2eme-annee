@@ -7,6 +7,6 @@ Pour ce faire, deux solutions nous ont été avancées :
 
 *Solution 1:*
 
--Le serveur écrit des fichiers contenant les paquets captés(on aura donc une liste des paquets).
+-Le serveur écrit des fichiers contenant les paquets captés(on aura donc une liste des paquets).\\
 -
  
