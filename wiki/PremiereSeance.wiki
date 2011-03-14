@@ -27,10 +27,24 @@ Nous avons opté pour la première solution.Pour ce qui concerne la première pr
 
  -capturer des paquets
 
- -écriture des ces fichiers dans des fichiers(par exemple un fichier est crée chauqe minute)
+ -écriture de ces paquets au format pcap dans des fichiers(par exemple un fichier est crée chauqe minute)
+
+ -partie connection avec le client:
+    
+   -Sokets
+
+   -petit protocole List GET
 
 2)client:
 
- -récupérer la liste des paquets et télécharge le fichier qu'il chercher
+ -partie connection avec le serveur:
+  
+   -les sokets
+
+   - petit protocole List Get
+
+ -partie filtrage
+
+ -partie analyse
   
  
