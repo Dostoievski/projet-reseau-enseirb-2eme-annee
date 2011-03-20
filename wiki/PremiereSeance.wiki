@@ -13,25 +13,25 @@ Pour ce faire, deux solutions nous ont été avancées :
 
 *Solution 2:*
 
- -Le client fait une requette de préfiltrage au serveur
+ -Le client fait une requête de préfiltrage au serveur.
 
- -Le serveur capture les paquets correspondant et les écrit dans un fichier(un fichier par client)
+ -Le serveur capture les paquets correspondants et les écrit dans un fichier(un fichier par client).
 
- -Le client récupère le fichier et l'analyse
+ -Le client récupère le fichier et l'analyse.
 
 *Solution choisie*
 
-Nous avons opté pour la première solution.Pour ce qui concerne la première prtie du projet, le travail se divise en deux étapes:
+Nous avons opté pour la première solution.Pour ce qui concerne la première partie du projet, le travail se divise en deux étapes:
 
 1)Créer le serveur:
 
  -capturer des paquets
 
- -écriture de ces paquets au format pcap dans des fichiers(par exemple un fichier est crée chauqe minute)
+ -écriture de ces paquets au format pcap dans des fichiers(par exemple un fichier est créé chauqe minute)
 
  -partie connection avec le client:
     
-   -Sokets
+   -Sockets
 
    -petit protocole List GET
 
@@ -39,7 +39,7 @@ Nous avons opté pour la première solution.Pour ce qui concerne la première pr
 
  -partie connection avec le serveur:
   
-   -les sokets
+   -les sockets
 
    - petit protocole List Get
 
