@@ -1,7 +1,5 @@
 /*
- * common.c
- * Xavier Delord
- * 12.11.2002
+
  */
 
 #include <stdio.h>
