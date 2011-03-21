@@ -1,15 +1,17 @@
 =Plannig des séances=
+
 *21 Mars*
 
 Organisation finie
 
 *28 Mars*
 
-taches répartis et développement bien avancé
+Tâches réparties et développement bien avancé
 
 *04 Avril*
-démo partie client/serveur transfert de fichiers(codage de Soket obligatoire)
 
-éventuellement capture(cote serveur création pcap)
+Démo partie client/serveur transfert de fichiers(codage de Socket obligatoire)
 
-analyse(coté client lecture pcap)
+éventuellement capture(côté serveur création pcap)
+
+analyse(côté client, lecture pcap)
