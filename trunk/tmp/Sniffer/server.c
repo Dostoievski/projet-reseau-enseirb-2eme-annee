@@ -155,10 +155,18 @@ void list (int clientfd)
   else {
     //tout est Ok
     reponse.ack=ANSWER_OK;
+    
+      /* Envoi de l'acquittement au client */
+      retour = write(clientfd, &reponse, sizeof(struct answer));
+      if (retour == -1)
+	{
+	  fprintf(stdout, "[%i] : Erreur dans l'envoi de l'acquittement\n", getpid());
+	  exit(EXIT_FAILURE);
+	}
     //on envoie ce qu'on liste au serveur 
   struct dirent * dir;
   while((dir = readdir(fd)) != NULL){
-    retour = write(clientfd,dir->d_name,sizeof(dir->d_name)); 
+    retour = write(clientfd,dir->d_name,sizeof(struct dirent)); 
   }
   closedir(fd);
   close(clientfd);
