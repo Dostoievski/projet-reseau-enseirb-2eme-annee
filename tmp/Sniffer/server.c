@@ -312,9 +312,9 @@ int main ()
 // Lancement du traitant des requetes
 	  close(client);	       // Fermer le socket fils	  
 	}
-	else{
-	  close(client);   // Fermer le socket fils
-	}
+	//else{
+	//close(client);   // Fermer le socket fils
+	//}
       } 
     }  
     exit(2); //kill le processus server à la fin de l'exécution pour ne pas générer une bind error 98.
