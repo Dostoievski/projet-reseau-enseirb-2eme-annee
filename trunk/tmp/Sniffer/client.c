@@ -145,6 +145,7 @@ void list (int serverfd, char *servername)
 
   //on affiche la liste envoyée par le serveur
   dup2(serverfd,STDOUT_FILENO);
+  printf("yo\n");
   
 }
 
