@@ -9,38 +9,18 @@
 #include<netinet/tcp.h> //Provides declarations for tcp header 
 #include<netinet/ip.h> //Provides declarations for ip header   
 #include <glib.h>
+#include "programme.h"
 
 /*****************
  *Global variables
  *****************/
 FILE *logfile;
 
-struct sockaddr_in source,dest;
-//pour le format pcap: file header
-typedef struct pcap_hdr_s {
-        guint32 magic_number;   /* magic number */
-        guint16 version_major;  /* major version number */
-        guint16 version_minor;  /* minor version number */
-        gint32  thiszone;       /* GMT to local correction */
-        guint32 sigfigs;        /* accuracy of timestamps */
-        guint32 snaplen;        /* max length of captured packets, in octets */
-        guint32 network;        /* data link type */
-} pcap_hdr_t;
-
-//packet header
-typedef struct pcaprec_hdr_s {
-        guint32 ts_sec;         /* timestamp seconds */
-        guint32 ts_usec;        /* timestamp microseconds */
-        guint32 incl_len;       /* number of octets of packet saved in file */
-        guint32 orig_len;       /* actual length of packet */
-} pcaprec_hdr_t;
-
-void print_pcap_format(u_char *args, const struct pcap_pkthdr *header, const u_char *packet);
-
 /****************
  *Main function
  ****************/
 int main() {
+
   pcap_if_t alldevsp[100];       /*all found device*/
   pcap_if_t*device;              /*the device to sniff on*/
   pcap_t *handle;                /*Handle of the device that shall be sniffed*/
@@ -82,7 +62,7 @@ int main() {
   printf("Done\n");
 
   //open the file to write in
-  logfile=fopen("log.txt","w");
+  logfile=fopen("log.txt","wb");
   if(logfile==NULL)
     printf("Unable to create file.\n");
 
@@ -92,12 +72,22 @@ int main() {
 }
 
 //pcap_pkthdr contient tte les info concernant un packet capté
+/*
+struct pcap_pkthdr {
+                struct timeval ts; //time stamp 
+		bpf_u_int32 caplen; // length of portion present 
+		bpf_u_int32 len; // length this packet (off wire) 
+	}
+
+args corresponds to the last argument of pcap_loop()
+
+A packet contains many attributes, so as you can imagine, 
+it is not really a string, but actually a collection of structures  
+*/
 void print_pcap_format(u_char *args, const struct pcap_pkthdr *header, const u_char *packet){
   pcaprec_hdr_t * filePcap = (pcaprec_hdr_t*)malloc(sizeof(pcaprec_hdr_t));
   assert(filePcap);
-  fprintf(logfile,"la max d'octets captés pour chaque packets %d\n",filePcap->incl_len);
-
-
-
+  fprintf(logfile,"*******************************Global Header****************************\n");
+  fprintf(filePcap,sizeof(filePcap),1,logfile);
 
 }
