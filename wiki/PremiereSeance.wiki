@@ -49,9 +49,13 @@ Nous avons opté pour la première solution.Pour ce qui concerne la première pa
   
 =Plannig des séances=
 *21 Mars*
+
 Organisation finie
+
 *28 Mars*
+
 taches répartis et développement bien avancé
+
 *04 Avril*
 démo partie client/serveur transfert de fichiers(codage de Soket obligatoire)
 
