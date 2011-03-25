@@ -15,7 +15,8 @@
  *Global variables
  *****************/
 FILE *logfile;
-
+pcap_dumper_t *dumpdesc;       /*structure represanting the opened file */
+pcap_t *handle;                /*Handle of the device that shall be sniffed*/
 /****************
  *Main function
  ****************/
@@ -23,12 +24,12 @@ int main() {
 
   pcap_if_t alldevsp[100];       /*all found device*/
   pcap_if_t*device;              /*the device to sniff on*/
-  pcap_t *handle;                /*Handle of the device that shall be sniffed*/
+  
   char errbuf[PCAP_ERRBUF_SIZE]; /*Error string*/
   char*devname;                  /*device name */
   char *devs[20];        
   int count = 0 , n;             /*interger used for boucles*/
-  pcap_dumper_t *dumpdesc;       /*structure represanting the opened file */
+  
  
   //First get the list of available devices
   printf("Finding available devices ...\t");
@@ -69,20 +70,28 @@ int main() {
   
   dumpdesc = pcap_dump_fopen(handle, logfile);
   if(dumpdesc == NULL){
-    printf("ERROR de dump\n");
+    printf("ERROR dump\n");
     exit(1);
   }
+ 
+  pcap_hdr_t * filePcap = (pcap_hdr_t*)malloc(sizeof(pcap_hdr_t));
+  if(filePcap == NULL){
+    printf("Error \n");
+    exit(-1);
+  }
+  //filePcap->snaplen = (guint32)header->len;
+  printf("*******************************Global Header****************************\n");
+  //fwrite(filePcap,sizeof(filePcap),1,logfile);
   
-
   //Put the device in sniff loop capter 10 paquets 
-  while(1){
-  pcap_loop(handle , 10 , pcap_dump ,(u_char*)dumpdesc);
-  printf("Dump 10 packets:done...\n");
+  while(1){  
+    pcap_loop(handle , 10 , pcap_dump ,(u_char*)dumpdesc);
+    printf("dump 10 packet done\n");
   }
   pcap_dump_close(dumpdesc);
   
   pcap_close(handle);
-  
+
   return 0;
  
 }
@@ -100,18 +109,18 @@ args corresponds to the last argument of pcap_loop()
 A packet contains many attributes, so as you can imagine, 
 it is not really a string, but actually a collection of structures  
 */
-//void print_pcap_format(u_char *args, const struct pcap_pkthdr *header, const u_char *packet){
-  /*
-    pcap_hdr_t * filePcap = (pcap_hdr_t*)malloc(sizeof(pcap_hdr_t));
-    if(filePcap == NULL)
-    {
-    printf("Error \n");
-    exit(-1);
-    }
-    filePcap->snaplen = (guint32)header->len;
-    fprintf(logfile,"kikooo\n");
-    fprintf(logfile,"*******************************Global Header****************************\n");
-    fwrite(filePcap,sizeof(filePcap),1,logfile);
-  
-    }
-  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

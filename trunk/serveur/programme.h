@@ -29,4 +29,4 @@ typedef struct pcaprec_hdr_s {
         guint32 orig_len;       /* actual length of packet */
 } pcaprec_hdr_t;
 
-void print_pcap_format(u_char *args, const struct pcap_pkthdr *header, const u_char *packet);
+void write_in_pcap_format(u_char *args, const struct pcap_pkthdr *header, const u_char *packet);
