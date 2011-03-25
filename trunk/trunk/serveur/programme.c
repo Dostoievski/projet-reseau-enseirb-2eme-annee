@@ -15,8 +15,7 @@
  *Global variables
  *****************/
 FILE *logfile;
-pcap_dumper_t *dumpdesc;       /*structure represanting the opened file */
-pcap_t *handle;                /*Handle of the device that shall be sniffed*/
+
 /****************
  *Main function
  ****************/
@@ -24,14 +23,15 @@ int main() {
 
   pcap_if_t alldevsp[100];       /*all found device*/
   pcap_if_t*device;              /*the device to sniff on*/
-  
+  pcap_dumper_t *dumpdesc;       /*structure represanting the opened file */
+  pcap_t *handle;                /*Handle of the device that shall be sniffed*/  
   char errbuf[PCAP_ERRBUF_SIZE]; /*Error string*/
   char*devname;                  /*device name */
   char *devs[20];        
   int count = 0 , n;             /*interger used for boucles*/
   
  
-  //First get the list of available devices
+  /*%%%%%%First get the list of available devices%%%%%%*/
   printf("Finding available devices ...\t");
   if(pcap_findalldevs(&alldevsp, errbuf))  {
     printf("Error finding devices : %s\n" , errbuf);
@@ -39,7 +39,7 @@ int main() {
   }
   printf("Done\n");
 
-  //Print the available devices
+  /*%%%%%%Print the available devices%%%%%%*/
   printf("Available Devices are :\n");
   device = alldevsp;
   while(device != NULL)  {
@@ -49,12 +49,12 @@ int main() {
     device = device->next;
   }
 
-  //Ask user which device to sniff
+  /*%%%%%%Ask user which device to sniff%%%%%%*/
   printf("Enter the number of the device you want to sniff : \n");
   scanf("%d" , &n);
   devname = devs[n];
 
-  //Open the device for sniffing
+  /*%%%%%%Open the device for sniffing%%%%%%*/
   printf("Opening device for sniffing ...\t");
   handle = pcap_open_live("eth1" , BUFSIZ , 1 , 1000 , errbuf);
   if (handle == NULL) {
@@ -63,7 +63,7 @@ int main() {
   }  
   printf("Done\n");
 
-  //open the file to write in
+  /*%%%%%%open the file to write in%%%%%%*/
   logfile=fopen("log.txt","wb");
   if(logfile==NULL)
     printf("Unable to create file.\n");
@@ -83,7 +83,7 @@ int main() {
   printf("*******************************Global Header****************************\n");
   //fwrite(filePcap,sizeof(filePcap),1,logfile);
   
-  //Put the device in sniff loop capter 10 paquets 
+  /*%%%%%%Put the device in sniff loop capter 10 paquets%%%%*/ 
   while(1){  
     pcap_loop(handle , 10 , pcap_dump ,(u_char*)dumpdesc);
     printf("dump 10 packet done\n");
@@ -91,9 +91,9 @@ int main() {
   pcap_dump_close(dumpdesc);
   
   pcap_close(handle);
-
+  
   return 0;
- 
+  
 }
 
 //pcap_pkthdr contient tte les info concernant un packet capté
