@@ -28,7 +28,8 @@ int main() {
   char*devname;                  /*device name */
   char *devs[20];        
   int count = 0 , n;             /*interger used for boucles*/
-  
+  pcap_dumper_t *dumpdesc;       /*structure represanting the opened file */
+ 
   //First get the list of available devices
   printf("Finding available devices ...\t");
   if(pcap_findalldevs(&alldevsp, errbuf))  {
@@ -65,10 +66,25 @@ int main() {
   logfile=fopen("log.txt","wb");
   if(logfile==NULL)
     printf("Unable to create file.\n");
+  
+  dumpdesc = pcap_dump_fopen(handle, logfile);
+  if(dumpdesc == NULL){
+    printf("ERROR de dump\n");
+    exit(1);
+  }
+  
 
-  //Put the device in sniff loop  
-  pcap_loop(handle , -1 , print_pcap_format , NULL);
-  return 0; 
+  //Put the device in sniff loop capter 10 paquets 
+  while(1){
+  pcap_loop(handle , 10 , pcap_dump ,(u_char*)dumpdesc);
+  printf("Dump 10 packets:done...\n");
+  }
+  pcap_dump_close(dumpdesc);
+  
+  pcap_close(handle);
+  
+  return 0;
+ 
 }
 
 //pcap_pkthdr contient tte les info concernant un packet capté
@@ -84,10 +100,18 @@ args corresponds to the last argument of pcap_loop()
 A packet contains many attributes, so as you can imagine, 
 it is not really a string, but actually a collection of structures  
 */
-void print_pcap_format(u_char *args, const struct pcap_pkthdr *header, const u_char *packet){
-  pcaprec_hdr_t * filePcap = (pcaprec_hdr_t*)malloc(sizeof(pcaprec_hdr_t));
-  assert(filePcap);
-  fprintf(logfile,"*******************************Global Header****************************\n");
-  fprintf(filePcap,sizeof(filePcap),1,logfile);
-
-}
+//void print_pcap_format(u_char *args, const struct pcap_pkthdr *header, const u_char *packet){
+  /*
+    pcap_hdr_t * filePcap = (pcap_hdr_t*)malloc(sizeof(pcap_hdr_t));
+    if(filePcap == NULL)
+    {
+    printf("Error \n");
+    exit(-1);
+    }
+    filePcap->snaplen = (guint32)header->len;
+    fprintf(logfile,"kikooo\n");
+    fprintf(logfile,"*******************************Global Header****************************\n");
+    fwrite(filePcap,sizeof(filePcap),1,logfile);
+  
+    }
+  */
