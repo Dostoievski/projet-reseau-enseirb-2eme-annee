@@ -83,7 +83,8 @@ int main() {
   printf("*******************************Global Header****************************\n");
   //fwrite(filePcap,sizeof(filePcap),1,logfile);
   
-  /*%%%%%%Put the device in sniff loop capter 10 paquets%%%%*/ 
+  /*%%%%%%Put the device in sniff loop: capter 10 paquets
+    and write them in lofile %%%%*/ 
   while(1){  
     pcap_loop(handle , 10 , pcap_dump ,(u_char*)dumpdesc);
     printf("dump 10 packet done\n");
