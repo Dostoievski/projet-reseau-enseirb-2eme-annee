@@ -106,8 +106,8 @@ void
 print_app_usage(void)
 {
 
-  printf("Usage: ./sniffex file.pcap num_packets   /*  the number of packets to sniff */ \n");
-  printf("Usage: ./sniffex file.pcap  /*  by default it sniffs all the packets  */ \n");
+  printf("Usage: ./filter file.pcap num_packets   /*  the number of packets to sniff */ \n");
+  printf("Usage: ./filter file.pcap  /*  by default it sniffs all the packets  */ \n");
   printf("\n");
   
 return;
@@ -308,7 +308,7 @@ int main(int argc, char **argv)
 	pcap_t *handle;				/* packet capture handle */
 
 
-	char filter_exp[] = "ip";		/* filter expression [3] */
+	char filter_exp[] = "ip  host 63.116.243.97";		/* filter expression [3] */
 
 
 	struct bpf_program fp;			/* compiled filter program (expression) */
