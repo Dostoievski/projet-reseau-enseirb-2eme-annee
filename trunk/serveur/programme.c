@@ -1,4 +1,6 @@
-/*  Packet sniffer using libpcap library */
+/*****************************************
+ *  Packet sniffer using libpcap library *
+ *****************************************/
 #include<pcap.h> 
 #include<stdio.h>
 #include<stdlib.h> 
@@ -8,6 +10,8 @@
 #include<netinet/udp.h> //Provides declarations for udp header 
 #include<netinet/tcp.h> //Provides declarations for tcp header 
 #include<netinet/ip.h> //Provides declarations for ip header   
+#include <sys/time.h>
+#include <unistd.h>
 #include <glib.h>
 #include "programme.h"
 
@@ -19,6 +23,12 @@ FILE *logfile;
 /****************
  *Main function
  ****************/
+float get_time() {
+  struct timeval tv;
+  gettimeofday(&tv,NULL);
+  return 1000*tv.tv_sec + tv.tv_usec/1000.0;
+}
+
 int main() {
 
   pcap_if_t alldevsp[100];       /*all found device*/
@@ -64,7 +74,7 @@ int main() {
   printf("Done\n");
 
   /*%%%%%%open the file to write in%%%%%%*/
-  logfile=fopen("log.txt","wb");
+  logfile=fopen("log.pcap","wb");
   if(logfile==NULL)
     printf("Unable to create file.\n");
   
@@ -86,7 +96,7 @@ int main() {
   /*%%%%%%Put the device in sniff loop: capter 10 paquets
     and write them in lofile %%%%*/ 
   while(1){  
-    pcap_loop(handle , 10 , pcap_dump ,(u_char*)dumpdesc);
+    pcap_loop(handle , 10 ,(pcap_handler)pcap_dump ,(u_char*)dumpdesc);
     printf("dump 10 packet done\n");
   }
   pcap_dump_close(dumpdesc);
