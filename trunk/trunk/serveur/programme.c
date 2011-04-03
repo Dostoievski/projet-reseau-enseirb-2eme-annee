@@ -12,9 +12,10 @@
 #include<netinet/ip.h> //Provides declarations for ip header   
 #include <sys/time.h>
 #include <unistd.h>
-#include <glib.h>
-#include "programme.h"
 
+#include "programme.h"
+#include "createFiles.h"
+#include "time.h"
 /*****************
  *Global variables
  *****************/
@@ -23,11 +24,7 @@ FILE *logfile;
 /****************
  *Main function
  ****************/
-float get_time() {
-  struct timeval tv;
-  gettimeofday(&tv,NULL);
-  return 1000*tv.tv_sec + tv.tv_usec/1000.0;
-}
+
 
 int main() {
 
@@ -38,8 +35,7 @@ int main() {
   char errbuf[PCAP_ERRBUF_SIZE]; /*Error string*/
   char*devname;                  /*device name */
   char *devs[20];        
-  int count = 0 , n;             /*interger used for boucles*/
-  
+  int count = 0 , i=0, n;             /*interger used for boucles*/  
  
   /*%%%%%%First get the list of available devices%%%%%%*/
   printf("Finding available devices ...\t");
@@ -66,60 +62,54 @@ int main() {
 
   /*%%%%%%Open the device for sniffing%%%%%%*/
   printf("Opening device for sniffing ...\t");
-  handle = pcap_open_live("eth1" , BUFSIZ , 1 , 1000 , errbuf);
+  handle = pcap_open_live("eth0" , BUFSIZ , 1 , 1000 , errbuf);
   if (handle == NULL) {
     fprintf(stderr, "Couldn't open device eth0 : %s\n" , errbuf);
     exit(1);
   }  
   printf("Done\n");
 
-  /*%%%%%%open the file to write in%%%%%%*/
-  logfile=fopen("log.pcap","wb");
-  if(logfile==NULL)
-    printf("Unable to create file.\n");
-  
-  dumpdesc = pcap_dump_fopen(handle, logfile);
-  if(dumpdesc == NULL){
-    printf("ERROR dump\n");
-    exit(1);
-  }
- 
-  pcap_hdr_t * filePcap = (pcap_hdr_t*)malloc(sizeof(pcap_hdr_t));
-  if(filePcap == NULL){
-    printf("Error \n");
+  /*%%%%%%Create a processus that creates a file 
+    every 1min and writes 
+    in it the captured packets%%%%%%%%  */
+
+  pid_t pid = createProcessus();
+
+  printf("valeur de fork %d \n",pid);
+
+  switch(pid){
+  case -1:
+    printf("Eror can't open the child processus\n");
     exit(-1);
+    break;
+  case 1:
+    printf("processeur pere\n");
+    break;
+  case 0:
+    printf("Files creation \n");
+    float t1, t2;
+    while(1){
+      if(one_minute_past(t1,t2) == 0){
+	i++;
+	FILE* f = createFile(i);
+	pcap_dumper_t* dumpdesc = createPcapFile(handle, f);
+	pcap_loop(handle ,-1 ,pcap_dump ,(u_char*)dumpdesc);
+	printf("sniffing done\n");
+	pcap_dump_close(dumpdesc);
+      }
+      t2=t1;
+     
+    }
+    pcap_close(handle);
+
+    break;
+  default:
+    printf("erreur Fork\n");
   }
-  //filePcap->snaplen = (guint32)header->len;
-  printf("*******************************Global Header****************************\n");
-  //fwrite(filePcap,sizeof(filePcap),1,logfile);
-  
-  /*%%%%%%Put the device in sniff loop: capter 10 paquets
-    and write them in lofile %%%%*/ 
-  while(1){  
-    pcap_loop(handle , 10 ,(pcap_handler)pcap_dump ,(u_char*)dumpdesc);
-    printf("dump 10 packet done\n");
-  }
-  pcap_dump_close(dumpdesc);
-  
-  pcap_close(handle);
-  
   return 0;
-  
 }
 
-//pcap_pkthdr contient tte les info concernant un packet capté
-/*
-struct pcap_pkthdr {
-                struct timeval ts; //time stamp 
-		bpf_u_int32 caplen; // length of portion present 
-		bpf_u_int32 len; // length this packet (off wire) 
-	}
 
-args corresponds to the last argument of pcap_loop()
-
-A packet contains many attributes, so as you can imagine, 
-it is not really a string, but actually a collection of structures  
-*/
 
 
 
