@@ -5,17 +5,18 @@
 #include<unistd.h>
 #include<pcap.h>
 #include"time.h"
-
-float get_time() {
+#include "math.h"
+double get_time() {
   struct timeval tv;
   gettimeofday(&tv,NULL);
-  return 60.0*(tv.tv_sec + tv.tv_usec*1000.0);
+  return (tv.tv_sec + tv.tv_usec/1000.0);
 }
 
-int one_minute_past(float t1, float t2){
+int one_minute_past(double t1, double t2){
   t1=get_time();
   t2=get_time();
-  if((t1-t2)>1){
+  //printf("%g t1-t2\n",t1-t2);
+  if(abs(t1-t2)>60.0){
     printf("one minute is past\n");
     return 0;
   }

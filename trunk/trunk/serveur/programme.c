@@ -87,13 +87,13 @@ int main() {
     break;
   case 0:
     printf("Files creation \n");
-    float t1, t2;
+    double t1, t2;
     while(1){
       if(one_minute_past(t1,t2) == 0){
 	i++;
 	FILE* f = createFile(i);
 	pcap_dumper_t* dumpdesc = createPcapFile(handle, f);
-	pcap_loop(handle ,-1 ,pcap_dump ,(u_char*)dumpdesc);
+	pcap_loop(handle ,10 ,pcap_dump ,(u_char*)dumpdesc);
 	printf("sniffing done\n");
 	pcap_dump_close(dumpdesc);
       }

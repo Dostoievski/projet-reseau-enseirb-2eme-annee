@@ -20,5 +20,5 @@ $(PROG): $(OBJS)
 	$(CC) -lpcap -o $(PROG) $(OBJS) `pkg-config --libs glib-2.0`
 
 clean :
-	\rm -f $(PROG) *.o *~ log.pcap
+	\rm -f $(PROG) *.o *~ log.pcap File*
 
