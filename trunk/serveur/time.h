@@ -5,5 +5,5 @@
 #include<unistd.h>
 #include<pcap.h>
 
-float get_time();
-int one_minute_past(float t1, float t2);
+double get_time();
+int one_minute_past(double t1, double t2);
