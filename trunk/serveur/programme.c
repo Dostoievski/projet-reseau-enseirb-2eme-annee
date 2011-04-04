@@ -12,7 +12,6 @@
 #include<netinet/ip.h> //Provides declarations for ip header   
 #include <sys/time.h>
 #include <unistd.h>
-
 #include "programme.h"
 #include "createFiles.h"
 #include "time.h"
@@ -29,7 +28,7 @@ FILE *logfile;
 int main() {
 
   pcap_if_t alldevsp[100];       /*all found device*/
-  pcap_if_t*device;              /*the device to sniff on*/
+  pcap_if_t* device;              /*the device to sniff on*/
   pcap_dumper_t *dumpdesc;       /*structure represanting the opened file */
   pcap_t *handle;                /*Handle of the device that shall be sniffed*/  
   char errbuf[PCAP_ERRBUF_SIZE]; /*Error string*/
@@ -50,7 +49,7 @@ int main() {
   device = alldevsp;
   while(device != NULL)  {
     devs[count] = malloc(sizeof(device->name));
-    *(devs[count]) = device->name;
+    devs[count] = device->name;
     printf("%d. %s - %s\n", count++ , device->name , device->description);
     device = device->next;
   }
@@ -62,9 +61,9 @@ int main() {
 
   /*%%%%%%Open the device for sniffing%%%%%%*/
   printf("Opening device for sniffing ...\t");
-  handle = pcap_open_live("eth0" , BUFSIZ , 1 , 1000 , errbuf);
+  handle = pcap_open_live(devname , BUFSIZ , 1 , 1000 , errbuf);
   if (handle == NULL) {
-    fprintf(stderr, "Couldn't open device eth0 : %s\n" , errbuf);
+    fprintf(stderr, "Couldn't open device %s : %s\n" , devname, errbuf);
     exit(1);
   }  
   printf("Done\n");
@@ -73,7 +72,7 @@ int main() {
     every 1min and writes 
     in it the captured packets%%%%%%%%  */
 
-  pid_t pid = createProcessus();
+  pid_t pid = fork();//createProcessus();
 
   printf("valeur de fork %d \n",pid);
 
@@ -82,30 +81,29 @@ int main() {
     printf("Eror can't open the child processus\n");
     exit(-1);
     break;
-  case 1:
-    printf("processeur pere\n");
-    break;
   case 0:
     printf("Files creation \n");
-    double t1, t2;
+    double t1 = get_time(), t2;
+    FILE* f = createFile(i);
+    pcap_dumper_t* dumpdesc = createPcapFile(handle, f);
     while(1){
-      if(one_minute_past(t1,t2) == 0){
+      pcap_loop(handle ,1 ,pcap_dump ,(u_char*)dumpdesc);
+      t2 = get_time();
+      if(t2 - t1 > 60.0){
+	t1 = t2;
 	i++;
-	FILE* f = createFile(i);
-	pcap_dumper_t* dumpdesc = createPcapFile(handle, f);
-	pcap_loop(handle ,10 ,pcap_dump ,(u_char*)dumpdesc);
-	printf("sniffing done\n");
+	printf("done\n");
+	f = createFile(i);
+	dumpdesc = createPcapFile(handle, f);
 	pcap_dump_close(dumpdesc);
       }
-      t2=t1;
-     
     }
     pcap_close(handle);
-
     break;
-  default:
-    printf("erreur Fork\n");
-  }
+  default :
+    waitpid(pid, NULL,0);
+    printf("Capture terminée!!\n");
+  } 
   return 0;
 }
 
