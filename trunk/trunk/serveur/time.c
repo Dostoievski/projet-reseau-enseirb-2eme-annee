@@ -13,8 +13,8 @@ double get_time() {
 }
 
 int one_minute_past(double t1, double t2){
-  t1=get_time();
   t2=get_time();
+  //t2=get_time();
   //printf("%g t1-t2\n",t1-t2);
   if(abs(t1-t2)>60.0){
     printf("one minute is past\n");

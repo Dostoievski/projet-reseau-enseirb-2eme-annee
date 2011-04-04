@@ -9,14 +9,14 @@
 
 
 pid_t createProcessus(){
-  pid_t p = fork();
-  return p;
+  return fork();
 }
 
 FILE * createFile(int i){
-  char*fname = malloc(sizeof(char));
+  char*fname = malloc(sizeof(char) * 26);
   assert(fname);
   sprintf(fname,"File%d",i);
+  printf("génération du fichier %s ...", fname);
   FILE*f = fopen(fname,"wb");
   if(f==NULL){
     printf("Unable to create file.\n");
