@@ -1,4 +1,4 @@
-(voir les 2 choses à faire recommendées!!)
+(voir les 3 choses à faire recommendées!!)
 = On a :=
  * socket entre 1 serveur et 1 client (éventuellement plusieurs clients (fork(processus) ou thread)
  * partie de capture serveur
@@ -12,10 +12,13 @@
 
   * ->1ère possibilité : le serveur envoie TOUS les paquets et le client les reçoit et fait le filtrage et l'analyse.
 
-  * ->2ème possibilité : le serveur fait le filtrage personnalisé par client, le client fait l'analyse des paquets qu'il va recevoir (RECOMMANDE).
+  * ->2ème possibilité : 
+     *RECOMMANDE :
+       * le serveur fait le filtrage personnalisé par client, le client fait l'analyse des paquets qu'il va recevoir .
 
 = Configuration :
- * lister les IPs du réseau du serveur (par les IPs extérieurs) (192.168.X.Y)(besoin du masque réseau).
+ * RECOMMANDE
+ * lister les IPs du réseau du serveur (par les IPs extérieurs) (192.168.X.Y)(besoin du masque réseau). 
  * lister les réseux privés (10.X.X.X , 172.16.X.X, 192.168.n.X..)
 
 = Réparation : (filtrage)
@@ -33,10 +36,11 @@
 
 =Protection / Sécurité :
  * Affichage d'une alerte qd un user envoie son mot de passe en clair lors de l'utilisation par exemple :
-------------en FTP (en mode nn sécurisé, le plus simple) (RECOMMANDE)
-------------en HTTP
-------------en POP3 (avec Thunderbird)
-------------en IMAP
+ 
+ * RECOMMANDE : en FTP (en mode nn sécurisé, le plus simple) 
+ *------------en HTTP
+ *------------en POP3 (avec Thunderbird)
+ *------------en IMAP
 
 
 
