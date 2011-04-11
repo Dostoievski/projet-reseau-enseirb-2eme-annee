@@ -10,8 +10,9 @@
  * multi client (fichier ds un premier temps)
  * multi-client : temps réel
 
-->1ère possibilité : le serveur envoie TOUS les paquets et le client les reçoit et fait le filtrage et l'analyse.
-->2ème possibilité : le serveur fait le filtrage personnalisé par client, le client fait l'analyse des paquets qu'il va recevoir (RECOMMANDE).
+  * ->1ère possibilité : le serveur envoie TOUS les paquets et le client les reçoit et fait le filtrage et l'analyse.
+
+  * ->2ème possibilité : le serveur fait le filtrage personnalisé par client, le client fait l'analyse des paquets qu'il va recevoir (RECOMMANDE).
 
 = Configuration :
  * lister les IPs du réseau du serveur (par les IPs extérieurs) (192.168.X.Y)(besoin du masque réseau).
@@ -22,13 +23,13 @@
 
 = Optimisation : (analyse)
  ** Taux de protocoles : affichage d'une liste avec des pourcentages
-*------------P2P : 98%
-*------------HTTP : 67%
-*------------POP3 : 34%
-*------------SSH : 62 %
-*------------FTP : ..
-*------------SSH :
-*------------IMAP :
+ *------------P2P : 98%
+ *------------HTTP : 67%
+ *------------POP3 : 34%
+ *------------SSH : 62 %
+ *------------FTP : ..
+ *------------SSH :
+ *------------IMAP :
 
 =Protection / Sécurité :
  * Affichage d'une alerte qd un user envoie son mot de passe en clair lors de l'utilisation par exemple :
