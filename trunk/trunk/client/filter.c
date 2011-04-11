@@ -3,6 +3,9 @@
  * ----------			-----------
  * ip					Capture all IP packets.
  * tcp					Capture only TCP packets.
+ * udp					Capture only UDP packets.
+ * arp					Capture only ARP packets.
+ * icmp					Capture only ICMP packets.
  * tcp port 80			Capture only TCP packets with a port equal to 80.
  * ip host 10.1.2.3		Capture all IP packets to or from host 10.1.2.3.
  *
@@ -10,7 +13,9 @@
  *
  */
 
+/*http://www.life.fr/~marquet/ens/sem/tubes/tubes002.html*/
 
+char filter_exp[] = "udp port 80";		/* filter expression [3] */
 
 #include <pcap.h>
 #include <stdio.h>
@@ -262,6 +267,9 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
 		case IPPROTO_IP:
 			printf("   Protocol: IP\n");
 			return;
+		/* case IPPROTO_FTP: */
+		/* 	printf("   Protocol: HTTP\n"); */
+		/* 	return; */
 		default:
 			printf("   Protocol: unknown\n");
 			return;
@@ -308,7 +316,7 @@ int main(int argc, char **argv)
 	pcap_t *handle;				/* packet capture handle */
 
 
-	char filter_exp[] = "ip  host 63.116.243.97";		/* filter expression [3] */
+
 
 
 	struct bpf_program fp;			/* compiled filter program (expression) */
