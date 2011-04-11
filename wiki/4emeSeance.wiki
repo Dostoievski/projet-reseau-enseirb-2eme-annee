@@ -1,6 +1,6 @@
 (voir les 3 choses à faire recommandées!!)
 = On a :=
- * socket entre 1 serveur et 1 client (éventuellement plusieurs clients (fork(processus) ou thread)
+ * socket entre 1 serveur et 1 client (éventuellement plusieurs clients (fork(processus) ou thread http://www.life.fr/~marquet/ens/sem/tubes/tubes002.html)
  * partie de capture serveur
  * partie de filtrage client (Le filtrage n'a pas besoin d'analyser les données du paquet, uniquement les entêtes)
  * partie d'analyse client (L'analyse a besoin de récupérer et lire dans les données du paquet (exemple : mot de passe)
@@ -13,7 +13,7 @@
   * ->1ère possibilité : le serveur envoie TOUS les paquets et le client les reçoit et fait le filtrage et l'analyse.
 
   * ->2ème possibilité : 
-     *RECOMMANDE :
+     * RECOMMANDE :
        * le serveur fait le filtrage personnalisé par client, le client fait l'analyse des paquets qu'il va recevoir .
 
 = Configuration :
