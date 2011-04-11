@@ -1,3 +1,4 @@
+(voir les 2 choses à faire recommendées!!)
 = On a :=
  * socket entre 1 serveur et 1 client (éventuellement plusieurs clients (fork(processus) ou thread)
  * partie de capture serveur
@@ -10,7 +11,7 @@
  * multi-client : temps réel
 
 ->1ère possibilité : le serveur envoie TOUS les paquets et le client les reçoit et fait le filtrage et l'analyse.
-->2ème possibilité : le serveur fait le filtrage personnalisé par client, le client fait l'analyse des paquets qu'il va recevoir.
+->2ème possibilité : le serveur fait le filtrage personnalisé par client, le client fait l'analyse des paquets qu'il va recevoir (RECOMMANDE).
 
 = Configuration :
  * lister les IPs du réseau du serveur (par les IPs extérieurs) (192.168.X.Y)(besoin du masque réseau).
@@ -31,7 +32,7 @@
 
 =Protection / Sécurité :
  * Affichage d'une alerte qd un user envoie son mot de passe en clair lors de l'utilisation par exemple :
-------------en FTP (en mode nn sécurisé)
+------------en FTP (en mode nn sécurisé, le plus simple) (RECOMMANDE)
 ------------en HTTP
 ------------en POP3 (avec Thunderbird)
 ------------en IMAP
