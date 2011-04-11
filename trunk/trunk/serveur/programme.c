@@ -12,6 +12,7 @@
 #include<netinet/ip.h> //Provides declarations for ip header   
 #include <sys/time.h>
 #include <unistd.h>
+#include <pthread.h>
 #include "programme.h"
 #include "createFiles.h"
 #include "time.h"
@@ -19,6 +20,26 @@
  *Global variables
  *****************/
 FILE *logfile;
+pcap_dumper_t* dumpdesc;
+FILE* dumping_file;
+pcap_t*handle;/*Handle of the device that shall be sniffed*/
+int FERME = 0;
+
+void * create_dumping_file(){
+  int i = 0;
+  while(1){
+    i++;
+    printf("3-ICI\n");
+    sleep(60);
+    fprintf(stderr,"4-ICI");
+    fprintf(stdout, "done\n");
+    if(FERME) 
+      pcap_dump_close(dumpdesc);
+    fclose(dumping_file);
+    dumping_file = createFile(i);
+    dumpdesc = createPcapFile(handle, dumping_file);
+  }
+}
 
 /****************
  *Main function
@@ -30,7 +51,6 @@ int main() {
   pcap_if_t alldevsp[100];       /*all found device*/
   pcap_if_t* device;              /*the device to sniff on*/
   pcap_dumper_t *dumpdesc;       /*structure represanting the opened file */
-  pcap_t *handle;                /*Handle of the device that shall be sniffed*/  
   char errbuf[PCAP_ERRBUF_SIZE]; /*Error string*/
   char*devname;                  /*device name */
   char *devs[20];        
@@ -72,7 +92,7 @@ int main() {
     every 1min and writes 
     in it the captured packets%%%%%%%%  */
 
-  pid_t pid = fork();//createProcessus();
+  pid_t pid = 0;
 
   printf("valeur de fork %d \n",pid);
 
@@ -82,22 +102,28 @@ int main() {
     exit(-1);
     break;
   case 0:
-    printf("Files creation \n");
-    double t1 = get_time(), t2;
-    FILE* f = createFile(i);
-    pcap_dumper_t* dumpdesc = createPcapFile(handle, f);
+    fprintf(stdout,"Files creation \n");
+    dumping_file = createFile(0);
+    dumpdesc = createPcapFile(handle, dumping_file);
+    printf("1-ICI\n");
+    pthread_t th;
+    pthread_create(&th,NULL,create_dumping_file,NULL);
     while(1){
+      //t2 = get_time();
+      //printf("time = %g\n", t2-t1);
+      FERME = 0;
       pcap_loop(handle ,1 ,pcap_dump ,(u_char*)dumpdesc);
-      t2 = get_time();
-      if(t2 - t1 > 60.0){
-	t1 = t2;
-	i++;
-	printf("done\n");
-	f = createFile(i);
-	dumpdesc = createPcapFile(handle, f);
-	pcap_dump_close(dumpdesc);
-      }
+      FERME = 1;
+      fprintf(stderr,"2-ICI");
+      //printf("time = %g\n", t2-t1);
+      //if(t2 - t1 > 5.0){
+      //t1 = t2;
+      //i++;
+      //fprintf(stdout, "done\n");
+      //f = createFile(i);
+      //
     }
+    
     pcap_close(handle);
     break;
   default :

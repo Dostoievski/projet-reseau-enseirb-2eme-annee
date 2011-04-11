@@ -9,7 +9,7 @@
 double get_time() {
   struct timeval tv;
   gettimeofday(&tv,NULL);
-  return (tv.tv_sec + tv.tv_usec/1000.0);
+  return (tv.tv_sec + tv.tv_usec/1000000.0);
 }
 
 int one_minute_past(double t1, double t2){

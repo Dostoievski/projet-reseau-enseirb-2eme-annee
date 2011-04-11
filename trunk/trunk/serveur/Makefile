@@ -15,9 +15,9 @@ createFiles.o :createFiles.c createFiles.h
 	$(CC) -c createFiles.c
 
 programme.o : programme.c programme.h createFiles.h time.h
-	$(CC) -c `pkg-config --cflags glib-2.0` programme.c	
+	$(CC) -c `pkg-config  --cflags glib-2.0` programme.c	
 $(PROG): $(OBJS)
-	$(CC) -lpcap -o $(PROG) $(OBJS) `pkg-config --libs glib-2.0`
+	$(CC) -lpthread -lpcap -o $(PROG) $(OBJS) `pkg-config --libs glib-2.0`
 
 clean :
 	\rm -f $(PROG) *.o *~ log.pcap File*
