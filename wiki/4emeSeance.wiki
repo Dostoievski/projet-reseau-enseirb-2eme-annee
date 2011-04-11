@@ -17,8 +17,7 @@
        * le serveur fait le filtrage personnalisé par client, le client fait l'analyse des paquets qu'il va recevoir .
 
 = Configuration :
- * RECOMMANDE
- * lister les IPs du réseau du serveur (par les IPs extérieurs) (192.168.X.Y)(besoin du masque réseau). 
+ * RECOMMANDE : lister les IPs du réseau du serveur (par les IPs extérieurs) (192.168.X.Y)(besoin du masque réseau). 
  * lister les réseux privés (10.X.X.X , 172.16.X.X, 192.168.n.X..)
 
 = Réparation : (filtrage)
