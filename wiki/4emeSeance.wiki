@@ -1,4 +1,4 @@
-(voir les 3 choses à faire recommendées!!)
+(voir les 3 choses à faire recommandées!!)
 = On a :=
  * socket entre 1 serveur et 1 client (éventuellement plusieurs clients (fork(processus) ou thread)
  * partie de capture serveur
