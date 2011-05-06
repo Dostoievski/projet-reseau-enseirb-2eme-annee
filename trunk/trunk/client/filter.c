@@ -15,12 +15,13 @@
 
 #include "process.h"
 
-char filter_exp[] = "tcp";		/* filter expression [3] */
+char filter_exp[] = "ip";		/* filter expression [3] */
 
 
 int main(int argc, char **argv)
 {
-
+  /* we init the protocoles occurences*/
+  count_protocoles_init(protocoles,PROTOCOLES_NUM);
 
 	char errbuf[PCAP_ERRBUF_SIZE];		/* error buffer */
 	pcap_t *handle;				/* packet capture handle */
@@ -85,6 +86,10 @@ int main(int argc, char **argv)
 	pcap_close(handle);
 
 	printf("\nCapture complete.\n");
+	/* we print the protocoles stats */
+	printf(" \n******************************************************************\nstatisitiques : \n");
+
+	count_protocoles_stats();
 	 }
 return 0;
 }

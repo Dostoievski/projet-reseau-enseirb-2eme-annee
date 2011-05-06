@@ -1,5 +1,75 @@
 #include "process.h"
 
+/*zero init fucntion */
+void
+count_protocoles_init ( int * tab, int size){
+  int k =0;
+  for(k=0; k <size; k++) tab[k]=0;
+}
+
+
+
+
+/*increments protocoles occurences*/
+void count_protocoles_inc(int protocole_port){
+  int port = protocole_port;
+  switch (port){
+  case 80 :
+    protocoles[HTTP]++;
+    break;
+  case 21 :
+    protocoles[FTP]++;
+    break;
+  case 22 :
+    protocoles[SSH]++;
+    break;
+  case 143 :
+    protocoles[IMAP]++;
+    break;
+  case 110 :
+    protocoles[POP3]++;
+    break;
+  case 443 :
+    protocoles[HTTPS]++;
+    break;
+  case 23 :
+    protocoles[TELNET]++;
+    break;
+  case 7 :
+    protocoles[ECHO]++;
+    break;
+  case 52 :
+    protocoles[DNS]++;
+    break;
+  default :
+    break;
+
+  
+  }
+}
+
+void count_protocoles_stats(){
+  int sum=0;
+
+  int k;
+  /* calculates the sum of all protocoles occurences*/
+  for (k=0; k<PROTOCOLES_NUM; k++) sum+=protocoles[k];
+  if (sum ==0) {printf("nothing to analyse, try changing the filter expression !\n"); return; }
+  else{
+  /* prints stats*/
+  
+  printf("HTTP   :   %d %% \n",protocoles[HTTP]*100/sum);
+  printf("FTP    :   %d %% \n",protocoles[FTP]*100/sum);
+  printf("SSH    :   %d %% \n",protocoles[SSH]*100/sum);
+  printf("POP3   :   %d %% \n",protocoles[POP3]*100/sum);
+  printf("IMAP   :   %d %% \n",protocoles[IMAP]*100/sum);
+  printf("HTTPS  :   %d %% \n",protocoles[HTTPS]*100/sum);
+  printf("TELNET :   %d %% \n",protocoles[TELNET]*100/sum);
+  printf("DNS    :   %d %% \n",protocoles[DNS]*100/sum);
+  printf("ECHO   :   %d %% \n",protocoles[ECHO]*100/sum);
+  }
+}
+
 
 /*
  * print help text
@@ -186,6 +256,11 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
 	
 	printf("   Src port: %d\n", ntohs(tcp->th_sport));
 	printf("   Dst port: %d\n", ntohs(tcp->th_dport));
+
+	/* we incremente the src/dst protocoles occurences */
+	count_protocoles_inc(ntohs(tcp->th_sport));
+	count_protocoles_inc(ntohs(tcp->th_dport));
+
 	
 	/* define/compute tcp payload (segment) offset */
 	payload = (u_char *)(packet + SIZE_ETHERNET + size_ip + size_tcp);
