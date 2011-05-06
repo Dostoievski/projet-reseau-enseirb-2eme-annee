@@ -1,3 +1,5 @@
+#ifndef FILTER
+#define FILTER
 
 #include <pcap.h>
 #include <stdio.h>
@@ -9,6 +11,23 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+
+
+/*usual protocoles*/
+#define  HTTP 1
+#define  FTP  2
+#define  SSH  3
+#define  IMAP 4
+#define  POP3 5
+#define  HTTPS  6
+#define  TELNET 0
+#define  ECHO   7
+#define  DNS   8
+
+#define  PROTOCOLES_NUM 9
+/* a tab to strore usual protocoles stats*/
+int protocoles[PROTOCOLES_NUM]; 
+
 
 /* default snap length (maximum bytes per packet to capture) */
 #define SNAP_LEN 1518
@@ -70,17 +89,30 @@ struct sniff_tcp {
         u_short th_urp;                 /* urgent pointer */
 };
 
+/* prints protocoles stats*/
+void count_protocoles_stats();
+
+/*strores protocoles occurence stats*/
+void
+count_protocoles_init ( int *, int);
+
+/*increments protocoles occurences*/
+void count_protocoles_inc(int);
+
+/*the pcap run loop call back funtion */
 void
 got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet);
 
+/* to print packet paylods*/
 void
 print_payload(const u_char *payload, int len);
 
+/* to print payload in ascii*/
 void
 print_hex_ascii_line(const u_char *payload, int len, int offset);
 
-
-
+/*speaks for itself*/
 void
 print_app_usage(void);
 
+#endif
