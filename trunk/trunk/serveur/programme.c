@@ -29,9 +29,7 @@ void * create_dumping_file(){
   int i = 0;
   while(1){
     i++;
-    printf("3-ICI\n");
     sleep(60);
-    fprintf(stderr,"4-ICI");
     fprintf(stdout, "done\n");
     if(FERME) 
       pcap_dump_close(dumpdesc);
@@ -92,9 +90,9 @@ int main() {
     every 1min and writes 
     in it the captured packets%%%%%%%%  */
 
-  pid_t pid = 0;
+  pid_t pid = fork();
 
-  printf("valeur de fork %d \n",pid);
+  printf("pid du processus en charge: %d \n",pid);
 
   switch(pid){
   case -1:
@@ -105,23 +103,13 @@ int main() {
     fprintf(stdout,"Files creation \n");
     dumping_file = createFile(0);
     dumpdesc = createPcapFile(handle, dumping_file);
-    printf("1-ICI\n");
     pthread_t th;
     pthread_create(&th,NULL,create_dumping_file,NULL);
-    while(1){
-      //t2 = get_time();
-      //printf("time = %g\n", t2-t1);
+    //    while(1){
+    for(i=0;i<10;i++){
       FERME = 0;
       pcap_loop(handle ,1 ,pcap_dump ,(u_char*)dumpdesc);
       FERME = 1;
-      fprintf(stderr,"2-ICI");
-      //printf("time = %g\n", t2-t1);
-      //if(t2 - t1 > 5.0){
-      //t1 = t2;
-      //i++;
-      //fprintf(stdout, "done\n");
-      //f = createFile(i);
-      //
     }
     
     pcap_close(handle);
