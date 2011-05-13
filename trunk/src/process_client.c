@@ -80,7 +80,7 @@ void count_protocoles_stats(){
   if (sum ==0) {printf("nothing to analyse, try changing the filter expression !\n"); return; }
   else{
   /* prints stats*/
-    int fd = fopen("log","a+");
+    int fd = fopen("log","w+");
   
     fprintf(fd,"HTTP   :   %d %% \n",protocoles[HTTP]*100/sum);
     fprintf(fd,"FTP    :   %d %% \n",protocoles[FTP]*100/sum);
@@ -227,6 +227,7 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
 	int size_tcp;
 	int size_payload;
 	
+	const struct sniff_icmp *icmp;
 	printf("\nPacket number %d:\n", count);
 	count++;
 	
@@ -256,7 +257,26 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
 	case IPPROTO_ICMP:
 	  printf("   Protocol: ICMP\n");
 	  //traitement icmp
-	  return;
+	  icmp=(struct sniff_icmp*)(packet+SIZE_ETHERNET+size_ip);	
+	  switch (icmp->itype){
+	  case ICMP_UNREACH :
+	    printf("type ICMP : ICMP_UNREACH\n");
+	    return;
+	  case ICMP_SOURCEQUENCH :
+	    printf("type ICMP : ICMP_SOURCEQUENCH\n");
+	    return;
+	  case ICMP_ECHO :
+	    printf("type ICMP : ICMP_ECHO\n");
+	    return;
+	  case ICMP_TIMXCEED :
+	    printf("type ICMP : ICMP_TIMXCEED	\n");
+	    return;
+	  case ICMP_TSTAMP :
+	    printf("type ICMP : ICMP_TSTAMP\n");
+	    return;
+	  default:
+	    return;
+	  }
 	case IPPROTO_IP:
 	  printf("   Protocol: IP\n");
 	  return;

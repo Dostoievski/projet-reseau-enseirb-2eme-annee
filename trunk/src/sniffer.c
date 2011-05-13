@@ -28,7 +28,7 @@ void* start_sniffing(void * num)
 
 
   int  num_packet = *((int *)num);
-  fprintf(stderr,"sniffer : num_packet %d\n",num_packet);
+  
   char *devs[20];            /* a tab that contains all devices names*/
   pcap_if_t *alldevsp[100];       /*all found devices */
   pcap_if_t* device;              /*the device to sniff on*/
@@ -114,12 +114,6 @@ void* start_sniffing(void * num)
   t1 = t2;
     }
   }
-   /* const u_char * packet; */
-  /* struct pcap_pkthdr header; */
-  /* do   */
-  /*   pcap_dispatch(handle, num_packet, got_packet, NULL); */
-  /* while(packet=pcap_next(handle,&header));   */
-
   /* cleanup */
   pcap_freecode(&fp);
   pcap_close(handle);
