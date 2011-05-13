@@ -99,6 +99,30 @@ struct sniff_tcp {
         u_short th_urp;                 /* urgent pointer */
 };
 
+
+/*  udp header*/
+struct sniff_udp{
+  u_short uh_sport;
+  u_short uh_dport;
+  u_short uh_len;
+  u_short uh_sum;
+
+
+};
+/*icmp header */
+struct sniff_icmp{
+  u_char itype;
+  u_char icode;
+  u_short icontr;
+  
+};
+
+#define	ICMP_UNREACH		3		/* dest unreachable, codes: */
+#define	ICMP_SOURCEQUENCH	4		/* packet lost, slow down */
+#define	ICMP_ECHO		8		/* echo service */
+#define	ICMP_TIMXCEED		11		/* time exceeded, code: */
+#define	ICMP_TSTAMP		13		/* timestamp request */
+
 /* prints protocoles stats*/
 void count_protocoles_stats();
 

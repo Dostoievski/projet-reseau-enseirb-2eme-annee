@@ -73,23 +73,17 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
   }
  
 
- 
-  /* print source and destination IP addresses */
-  //printf("       From: %s\n", inet_ntoa(ip->ip_src));
-  //printf("         To: %s\n", inet_ntoa(ip->ip_dst));
-  
-
   /* determine protocol */	
   switch(ip->ip_p) {
   case IPPROTO_TCP:
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,TCP);
     break;
   case IPPROTO_UDP:
-    udp=(struct sniff_udp*)(packet+SIZE_ETHERNET+size_ip);	
+    // udp=(struct sniff_udp*)(packet+SIZE_ETHERNET+size_ip);	
     send_packet_to_client(packet_to_send,SIZE_ETHERNET+ip->ip_len,UDP);
     return;
   case IPPROTO_ICMP:
-    icmp=(struct sniff_icmp*)(packet+SIZE_ETHERNET+size_ip);	
+    //icmp=(struct sniff_icmp*)(packet+SIZE_ETHERNET+size_ip);	
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,ICMP);
     return;
   case IPPROTO_IP:
