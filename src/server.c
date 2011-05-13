@@ -152,12 +152,10 @@ void sniff(int clientfd, char * pathname){
   fprintf(stderr,"server.c sniff 1\n");   
   //si le protocole existe, on envoie l'ACK et on ajoute l'ID du client dans le tab correspondant
   if ((strcmp (pathname, "ip") == 0)){
-    fprintf(stderr,"server.c sniff ip\n"); 
     if(add_client(IP,MAXCLIENTS,clientfd) <0){
       fprintf(stderr,"erreur add client a ip : requete sniff");
       exit(1);
     }
-    fprintf(stderr,"server.c sniff  fin ip\n"); 
   }
 
   else if ((strcmp (pathname, "tcp") == 0)){
@@ -217,10 +215,7 @@ void* handle_request (void * fd)
       dir_file(f, "./");//pour l'instant, on affiche le dossier courant
       break;
     case REQUEST_SNIFF:
-      fprintf(stderr,"server.c handle request\n");
-      fprintf(stderr,"path : %s\n",r.path);
       check_protocole(r.path);
-
       sniff(f, r.path);//path est le protocole que le client souhaite filtrer
       break;
     default:
@@ -266,7 +261,7 @@ int main ()
     /***********************************************/
     /* nbr of packets to capture*/
     int num_packet = -1; 
-    fprintf(stderr,"server.c 1\n"); 
+
     /* on lance le thread qui sniffera pendant tout le temps*/
     pthread_t worker;
     pthread_create(&worker,NULL,start_sniffing,(void *) &num_packet);

@@ -36,12 +36,19 @@ void look_for_pswd (char * text,char * delimiter_){
   free(str1);
 } 
 
-int main (){
- char * text = "mehdi jabri est un pd qui  a laissé son pswd = hmar !!";
- look_for_pswd(text," ");
- int fd = fopen("log", "w+");
- fprintf(fd,"%s\n",text);
- fprintf(fd," achraf zamel\n");
- 
 
+double get_time() {
+  struct timeval tv;
+  gettimeofday(&tv,NULL);
+  return (tv.tv_sec + tv.tv_usec/1000000.0);
+}
+
+
+
+int main (){
+    
+  int fd = fopen("toto","a+");
+  fprintf(fd,"zab\n");
+  fprintf(fd,"l9lawi\n");
+  
 }

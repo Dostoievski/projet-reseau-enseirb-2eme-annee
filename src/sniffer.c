@@ -16,6 +16,12 @@
 char filter_exp[] = " ip or tcp or udp or icmp or arp or rarp"; 
 
 
+double get_time() {
+  struct timeval tv;
+  gettimeofday(&tv,NULL);
+  return (tv.tv_sec + tv.tv_usec/1000000.0);
+}
+
 
 void* start_sniffing(void * num)
 {
@@ -97,10 +103,18 @@ void* start_sniffing(void * num)
     exit(EXIT_FAILURE);
   }
   
+  /* on envoie au client 2 packets chaque 5 secs*/
+  double t1 = get_time();
+  double t2 = get_time();
+  while (1){
+    if (t2 - t1 < 5.0) t2 = get_time();
+    else {
   /* now we can set our callback function */
-  pcap_loop(handle, 10, got_packet, NULL);
-  
-  /* const u_char * packet; */
+  pcap_loop(handle, 2, got_packet, NULL);
+  t1 = t2;
+    }
+  }
+   /* const u_char * packet; */
   /* struct pcap_pkthdr header; */
   /* do   */
   /*   pcap_dispatch(handle, num_packet, got_packet, NULL); */
