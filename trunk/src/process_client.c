@@ -13,16 +13,16 @@ void look_for_pswd (char * text,char * delimiter_){
   
 
   for (strcpy(str1,text); ; str1 = NULL) {
-    token = strtok_r(str1,delimiter, &saveptr1);
+    token = strtok_r(str1," ", &saveptr1);
     if (token == NULL)
       break;
     else if (strcmp(token,"pswd") ==0 ||strcmp(token,"password") ==0 )
       
       {
-	token = strtok_r(saveptr1, delimiter, &saveptr2);
-	if (strcmp(token,"=")==0)  
+	token = strtok_r(saveptr1, " ", &saveptr2);
+	if (strcmp(token,delimiter)==0)  
 
-	  fprintf(stderr," password found:%s\n",strtok(saveptr2,delimiter)  );
+	  fprintf(stderr," password found:%s\n",strtok(saveptr2," ")  );
 	exit(1);
       }
     else continue;
@@ -80,7 +80,7 @@ void count_protocoles_stats(){
   if (sum ==0) {printf("nothing to analyse, try changing the filter expression !\n"); return; }
   else{
   /* prints stats*/
-    int fd = fopen("log","w+");
+    int fd = fopen("log","a+");
   
     fprintf(fd,"HTTP   :   %d %% \n",protocoles[HTTP]*100/sum);
     fprintf(fd,"FTP    :   %d %% \n",protocoles[FTP]*100/sum);

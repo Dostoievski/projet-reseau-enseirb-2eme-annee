@@ -7,8 +7,6 @@
 #include "requests.h"
 #include "common.h"
 #include <ctype.h>
-/* buffer tmp de stokage des packets recus*/
-u_char* buffer[100];
 
 /*
  * check_answer ne rend la main que si  a->ack est ANSWER_OK,
@@ -128,6 +126,7 @@ void dir_file (int serverfd, char *servername)
  */
 
 void sniff(int serverfd, char * filter_exp){
+  
   struct request request_sniff;
   request_sniff.kind=REQUEST_SNIFF;
   strcpy(request_sniff.path,filter_exp);//the protocole to filter
@@ -148,29 +147,22 @@ void sniff(int serverfd, char * filter_exp){
 
   // CHECK ack sniff
     check_answer(&answer_sniff);
-  /*   //on cree un pipe pour passer la main au filtre */
- /*  if(mknod("pipe.pcap",S_IFIFO|0666,0) == -1 ){ */
- /*    perror("Erreur lors de la lecture de la création du pipe : sniff"); */
- /*    //    exit(EXIT_FAILURE); */
- /*  } */
 
- /*  //on ouvre le pipe en ecriture */
- /*  int fd = open("pipe.pcap",O_RDWR); */
- /*  if(fd<0){perror("erreur ouverture du pipe : sniff"); exit(1); } */
+     int taille=answer_sniff.nbbytes; 
+  /* buffer tmp de stokage des packets recus*/
+     u_char buffer[taille];
   
 
- /*  fprintf(stderr,"client.c 6\n");  */
- /* // récupération des données */
- /*  fprintf(stderr,"Debut de la recuperation des packets\n"); */
-
- /*    fprintf(stderr,"client.c 3\n");  */
-    //copy_n_bytes(serverfd,STDOUT_FILENO,taille);
-     int taille=answer_sniff.nbbytes; 
-    while(read(serverfd,buffer,taille))
-      /* on analyse les packets recus*/
-      got_packet(NULL, NULL, buffer);     
-    printf("Recuperation terminee\n");
-   
+  // Lecture de la réponse du serveur a la requete****/
+     while(read(serverfd,buffer,taille) )
+       {
+       /* on analyse les packets recus*/
+       got_packet(NULL, NULL, buffer);
+       
+       }
+     printf("Recuperation terminee\n");
+     /* on print les stats*/
+     count_protocoles_stats();
 }
 
 
@@ -284,7 +276,7 @@ int main (int argc, char **argv)
       sniff(serverfd,argv[3]);
       /* we print the protocoles stats */
       printf(" \n******************************************************************\nstatisitiques : \n");
-      count_protocoles_stats();
+
       break;
       }
     
