@@ -29,27 +29,25 @@ void* start_sniffing(void * num)
 
   int  num_packet = *((int *)num);
   
-  char *devs[20];            /* a tab that contains all devices names*/
-  pcap_if_t *alldevsp[100];       /*all found devices */
-  pcap_if_t* device;              /*the device to sniff on*/
-  char errbuf[PCAP_ERRBUF_SIZE];		/* error buffer */
-  pcap_t *handle;				/* packet capture handle */
-  char * dev = NULL;                              /* capture device name */
+  char *devs[20];                /* a tab that contains all devices names*/
+  pcap_if_t *alldevsp[100];      /* all found devices */
+  pcap_if_t* device;             /* the device to sniff on*/
+  char errbuf[PCAP_ERRBUF_SIZE]; /* error buffer */
+  pcap_t *handle;		 /* packet capture handle */
+  char * dev = NULL;             /* capture device name */
+  int count = 0 , n;             /* interger used for boucles*/  
+  struct bpf_program fp;	 /* compiled filter program (expression) */
+  bpf_u_int32 mask;		 /* subnet mask */
+  bpf_u_int32 net;		 /* ip */
   
-  int count = 0 , n;             /*interger used for boucles*/  
-
-  struct bpf_program fp;			/* compiled filter program (expression) */
-  bpf_u_int32 mask;			/* subnet mask */
-  bpf_u_int32 net;			/* ip */
-  
-/*%%%%%%First get the list of available devices%%%%%%*/
+  /*%%%%%%First get the list of available devices%%%%%%*/
   printf("Finding available devices ...\t");
   if(pcap_findalldevs(alldevsp, errbuf))  {
     printf("Error finding devices : %s\n" , errbuf);
     exit(1);
   }
   printf("Done\n");
-
+  
   /*%%%%%%Print the available devices%%%%%%*/
   printf("Available Devices are :\n");
   device = alldevsp;
@@ -66,37 +64,37 @@ void* start_sniffing(void * num)
   dev = devs[n];
 
   
-  /* get network number and mask associated with capture device */
+  /*%%%%% get network number and mask associated with capture device%%%%% */
   if (pcap_lookupnet(dev, &net, &mask, errbuf) == -1) {
     fprintf(stderr, "Couldn't get netmask for device %s: %s\n",dev, errbuf);
     net = 0;
     mask = 0;
   }
   
-  /* print capture info */
+  /*%%%% print capture info %%%%*/
   printf("Device: %s\n", dev);
   
-  /* open capture device */ 
+  /*%%% open capture device %%%%*/ 
   handle = pcap_open_live(dev, SNAP_LEN, 1, 1000, errbuf); //promiscuous mode
   if (handle == NULL) {
     fprintf(stderr, "Couldn't open device %s: %s\n", dev, errbuf);
     exit(EXIT_FAILURE);
   }
   
-  /* make sure we're capturing on an Ethernet device [2] */
+  /*%%% make sure we're capturing on an Ethernet device [2]%%% */
   if (pcap_datalink(handle) != DLT_EN10MB) {
     fprintf(stderr, "%s is not an Ethernet\n",dev);
     exit(EXIT_FAILURE);
   }
   
-  /* compile the filter expression */
+  /*%%% compile the filter expression%%% */
   if (pcap_compile(handle, &fp, filter_exp, 0, net) == -1) {
     fprintf(stderr, "Couldn't parse filter %s: %s\n",
 	    filter_exp, pcap_geterr(handle));
     exit(EXIT_FAILURE);
   }
   
-  /* apply the compiled filter */
+  /*%%% apply the compiled filter%%% */
   if (pcap_setfilter(handle, &fp) == -1) {
     fprintf(stderr, "Couldn't install filter %s: %s\n",
 	    filter_exp, pcap_geterr(handle));
@@ -107,11 +105,12 @@ void* start_sniffing(void * num)
   double t1 = get_time();
   double t2 = get_time();
   while (1){
-    if (t2 - t1 < 5.0) t2 = get_time();
+    if (t2 - t1 < 2.0) 
+      t2 = get_time();
     else {
   /* now we can set our callback function */
-  pcap_loop(handle, 2, got_packet, NULL);
-  t1 = t2;
+      pcap_loop(handle, 2, got_packet, NULL);
+      t1 = t2;
     }
   }
   /* cleanup */

@@ -1,3 +1,10 @@
+/**
+ * \file common.c
+ * \brief Programme représentant des fonctions untilisées à la fois par le serveur et le client.
+ * \author RedNetwork
+ * \version 0.1
+ * \date 16 Mai 2011
+ */
 #include <stdio.h>
 #include <stdarg.h>
 #include <unistd.h>
@@ -7,13 +14,17 @@
 #include <sys/types.h>
 #define MSGSIZE 512
 
-/*
- * Copie `nbbytes' octets depuis le descripteur `from' sur le descripteur `to'.
- * En cas d'echec, affiche un message explicatif.
+/**
+ * \fn int copy_n_bytes (int from, int to, int nbbytes)
+ * \brief Copie `nbbytes' octets depuis le descripteur `from' sur le descripteur `to'.
+ *  La lecture est faite par bloc de MSGSIZE octets.
+ *  L'ecriture s'attend
+ *  a ne pas pouvoir tout ecrire d'un seul coup.
+ * \param from : on lit n octets de from.
+ * \param to : on ecrit n octets dans to.
+ * \param nbbytes : le nombre de octets à copier.
+ * \return En cas d'echec, affiche un message explicatif.
  * Renvoie 0 si ok, -1 en cas d'erreur.
- *
- * La lecture est faite par bloc de MSGSIZE octets. L'ecriture s'attend
- * a ne pas pouvoir tout ecrire d'un seul coup.
  */
 int copy_n_bytes (int from, int to, int nbbytes)
 {
@@ -45,14 +56,15 @@ int copy_n_bytes (int from, int to, int nbbytes)
     return 0;
 }
 
-/*
- * Copie depuis le descripteur `from' sur le descripteur `to' jusqu'a
- * ce qu'une lecture sur `from' renvoie end-of-file.
- * En cas d'echec, affiche un message explicatif.
+/**
+ * \fn int copy_all_bytes (int from, int to)
+ * \brief Copie tous les octets depuis le descripteur `from' sur le descripteur `to'.
+ *  La lecture est faite par bloc de MSGSIZE octet.
+ *  L'ecriture s'attend a ne pas pouvoir tout ecrire d'un seul coup.
+ * \param from : on lit n octets de from.
+ * \param to : on ecrit n octets dans to.
+ * \return En cas d'echec, affiche un message explicatif.
  * Renvoie 0 si ok, -1 en cas d'erreur.
- *
- * La lecture est faite par bloc de MSGSIZE octets. L'ecriture s'attend
- * a ne pas pouvoir tout ecrire d'un seul coup.
  */
 int copy_all_bytes (int from, int to)
 {
@@ -83,9 +95,12 @@ int copy_all_bytes (int from, int to)
     return 0;
 }
 
-/*
- * Comme perror, mais avec deux chaines de caracteres.
- * perror2 ("Echec ouverture du fichier", filename);
+/**
+ * \fn void perror2 (char *s1, char *s2)
+ * \brief Fonctionalité pareille à perror mais avec deux chaine de caracteres.
+ *
+ * \param s1 : Echec ouverture du fichier.
+ * \param s2 : filename
  */
 void perror2 (char *s1, char *s2)
 {

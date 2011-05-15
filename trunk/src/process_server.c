@@ -1,19 +1,30 @@
+/**
+ * \file process_server.c
+ * \brief Programme vérifiant qu'un client est inscrit dans un tableau de protocole(ip par exemple) et lui envoye le packet correspondant à ce protocole.
+ * \author RedNetwork
+ * \version 0.1
+ * \date 16 Mai 2011
+ */
 #include "process_server.h"
 #include "requests.h"
 
-
-/* sends the pcap packet to clients*/
+/**
+ * \fn int send_packet_to_client(u_char * packet, int packet_size, int * tab)
+ * \brief Fonction qui envoye un packet à un client inscrit dans un tableau de protocole.
+ *
+ * \param packet : packet à envoyer aux clients.
+ * \param packet_size : taille du packet.
+ * \param tab : tableau de protocole dans lequel les client sont inscrits.
+ * \return 1 si tout va bien.
+ */
 int send_packet_to_client(u_char * packet, int packet_size, int * tab){
-  //fprintf(stderr,"process server debut\n");
   int i;
- 
   int size = packet_size;
   unsigned char * to_send = packet;
   struct answer answer_sniff;
+  
   //les tableaux de protocoles tab font une taille de MAXCLIENTS 
-
   for(i=0;i<MAXCLIENTS;i++){
-    //fprintf(stderr,"process server tab[i] = %d\n",tab[i]);
     /*si un clientfd est inscrit dans la table*/
     if (tab[i] !=0){
       int clientfd = tab[i];
@@ -32,7 +43,6 @@ int send_packet_to_client(u_char * packet, int packet_size, int * tab){
       }
     }
   }
-  //fprintf(stderr,"process server fin\n");
   return 1;
 }
 
@@ -40,9 +50,16 @@ int send_packet_to_client(u_char * packet, int packet_size, int * tab){
 /*
  * pcap call back function
  */
-void
-got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
-{
+
+/**
+ * \fn got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
+ * \brief Fonction appelée par pcap_loop, elle détermine le protocole du packet capté et l'envoie aux clients correspondants.
+ *
+ * \param args : nom du packet capté.
+ * \param header : l'entete du packet.
+ * \param packet : packet capté.
+ */
+void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet){
   u_char * packet_to_send = packet;
   static int count = 1;                   /* packet counter */
   
@@ -52,13 +69,7 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
   const struct sniff_tcp *tcp;            /* The TCP header */
   const struct sniff_udp *udp;
   const struct sniff_icmp *icmp;
-  //const char *payload;                    /* Packet payload */
-  
   int size_ip;
-  //int size_tcp;
-  //int size_payload;
-  
-  //printf("\nPacket number %d:\n", count);
   count++;
   
   /* define ethernet header */
@@ -71,7 +82,6 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
     printf(" * Invalid IP header length: %u bytes\n", size_ip);
     return;
   }
- 
 
   /* determine protocol */	
   switch(ip->ip_p) {
@@ -89,43 +99,24 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
   case IPPROTO_IP:
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,IP);
     return;
-case IPPROTO_ARP:
+  case IPPROTO_ARP:
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,ARP);
     return;
- case IPPROTO_RARP:
+  case IPPROTO_RARP:
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,RARP);
     return;
-   default:
+  default:
     return;
   }
-  
-  /* /\* */
-  /*  *  OK, this packet is TCP. */
-  /*  * */
-  
-  /* /\* define/compute tcp header offset *\/ */
-  /* tcp = (struct sniff_tcp*)(packet + SIZE_ETHERNET + size_ip); */
-  /* size_tcp = TH_OFF(tcp)*4; */
-  /* if (size_tcp < 20) { */
-  /* 	printf("   * Invalid TCP header length: %u bytes\n", size_tcp); */
-  /* 	return; */
-  /* } */
-  
-  /* printf("   Src port: %d\n", ntohs(tcp->th_sport)); */
-  /* printf("   Dst port: %d\n", ntohs(tcp->th_dport)); */
-  
-  /* /\* define/compute tcp payload (segment) offset *\/ */
-  /* payload = (u_char *)(packet + SIZE_ETHERNET + size_ip + size_tcp); */
-  
-  /* /\* compute tcp payload (segment) size *\/ */
-  /* size_payload = ntohs(ip->ip_len) - (size_ip + size_tcp); */
-  /* *\/ */
   return;
 }
 
-
-/*cette fonction verifie que le protocole que désire le client est bien pris en charge  */
-
+/**
+ * \fn check_protocole(char * protocole)
+ * \brief Fonction qui verifie que le protocole que désire le client est bien pris en charge.
+ *
+ * \param protocole : protocole désiré par le client.
+ */
 void check_protocole(char * protocole){
   char * name = protocole;
   /*si le protocole n'est pas ip ou tcp ou udp ou icmp, il y a erreur*/ 

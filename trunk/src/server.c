@@ -1,3 +1,10 @@
+/**
+ * \file server.c
+ * \brief Programme représentant les différentes fonctionalités du serveur.
+ * \author RedNetwork
+ * \version 0.1
+ * \date 16 Mai 2011
+ */
 #include <stdio.h>
 #include <ctype.h>
 #include <sys/types.h>
@@ -24,13 +31,14 @@
 #define fork() (0)
 #endif
 
-
-
-
-/* get_callername(fd) returns the hostname (or its ip address) on the other side
+/**
+ * \fn get_callername (int fd)
+ * \brief returns the hostname (or its ip address) on the other side
  * of the  connected socket fd. The name is contained in a static area.
  * (note: this is rather tricky)
  * This is used only to print nice messages about what's going on.
+ *
+ * \param fd : cnnected socket.
  */
 char *get_callername (int fd)
 {
@@ -53,12 +61,11 @@ char *get_callername (int fd)
     return sp->h_name;
 } /* get_callername */
 
-
-
-/*
- * Envoi d'un fichier (requete GET).
- * 'clientfd' est un socket connecte a un client.
- * 'filename' est le nom du fichier a envoyer.
+/**
+ * \fn get_file
+ * \brief  Envoi d'un fichier (requete GET).
+ * \param 'clientfd' est un socket connecte a un client.
+ * \param 'filename' est le nom du fichier a envoyer.
  */
 void get_file (int clientfd, char *filename)
 {
@@ -101,14 +108,11 @@ void get_file (int clientfd, char *filename)
     close(fd);
 } /* get_file */
 
-
-
-
-
-/*
- * ls sur un fichier/repertoire (requete DIR).
- * 'clientfd' est un socket connecte a un client.
- * 'pathname' est le nom du fichier ou repertoire a lister.
+/**
+ * \fn dir_file
+ * \brief ls sur un fichier/repertoire (requete DIR).
+ * \param 'clientfd' est un socket connecte a un client.
+ * \param 'pathname' est le nom du fichier ou repertoire a lister.
  */
 void dir_file (int clientfd, char *pathname)
 {
@@ -145,7 +149,12 @@ void dir_file (int clientfd, char *pathname)
 
 } /* dir_file */
 
-/* inscrit l'ID du client dans le tab des protocoles correspondant*/
+/**
+ * \fn sniff
+ * \brief inscrit l'ID du client dans le tab des protocoles correspondant.
+ * \param 'clientfd' est un socket connecte a un client.
+ * \param 'pathname' est le nom du fichier ou repertoire a sniffer.
+ */
 void sniff(int clientfd, char * pathname){
 
   struct answer answer_sniff;
@@ -185,12 +194,10 @@ void sniff(int clientfd, char * pathname){
   
 }/*end sniff*/
 
-
-
-
-/*
- * Lit une requete sur le descripteur 'f', et appelle la procedure
- * correspondante pour gerer cette requete.
+/**
+ * \fn handle_request
+ * \brief 
+ *
  */
 void* handle_request (void * fd)
 {
@@ -226,9 +233,11 @@ void* handle_request (void * fd)
     }
 }
 
-/* Traitement de la terminaison d'un fils.
+/**
+ * \fn traitement_sig
+ * \brief Traitement de la terminaison d'un fils. 
+ *
  */
-
 void traitement_sig(int sig)
 {
   int pid;
@@ -241,6 +250,11 @@ void traitement_sig(int sig)
   }
 }
 
+/**
+ * \fn main
+ * \brief main principal de serveur. 
+ *
+ */
 int main ()
 {
     struct sockaddr_in soc_in;
@@ -267,9 +281,6 @@ int main ()
     pthread_create(&worker,NULL,start_sniffing,(void *) &num_packet);
     /****************************************/
 
-
-
-    
     /* Création d'un socket 'ss' : famille IP et type TCP */
 	ss=socket(AF_INET,SOCK_STREAM,0);
 	if(ss==-1){
