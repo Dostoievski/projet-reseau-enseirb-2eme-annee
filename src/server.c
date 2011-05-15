@@ -193,7 +193,7 @@ else if ((strcmp (protocole, "arp") == 0))
     {
       //add client
       if(add_client(ARP,MAXCLIENTS,clientfd) <0){
-	fprintf(stderr,"erreur add client a icmp : requete sniff");
+	fprintf(stderr,"erreur add client a iarp : requete sniff");
 	exit(1);
       }
     }
@@ -201,12 +201,20 @@ else if ((strcmp (protocole, "rarp") == 0))
     {
       //add client
       if(add_client(ARP,MAXCLIENTS,clientfd) <0){
-	fprintf(stderr,"erreur add client a icmp : requete sniff");
+	fprintf(stderr,"erreur add client a rarp : requete sniff");
 	exit(1);
       }
     }
-  else
-    ;
+ else if ((strcmp (protocole, "igmp") == 0))
+   {
+     //add client
+     if(add_client(IGMP,MAXCLIENTS,clientfd) <0){
+       fprintf(stderr,"erreur add client a igmp : requete sniff");
+       exit(1);
+     }
+   }
+ else
+   ;
   
 }/*end sniff*/
 
@@ -285,6 +293,7 @@ int main ()
     table_init(TCP,MAXCLIENTS);
     table_init(UDP,MAXCLIENTS);
     table_init(ICMP,MAXCLIENTS);
+    table_init(IGMP,MAXCLIENTS);
 
 
 

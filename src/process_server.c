@@ -86,24 +86,32 @@ void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *pa
   /* determine protocol */	
   switch(ip->ip_p) {
   case IPPROTO_TCP:
+    fprintf(stderr,"packet tcp\n");
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,TCP);
     break;
   case IPPROTO_UDP:
-    // udp=(struct sniff_udp*)(packet+SIZE_ETHERNET+size_ip);	
+    fprintf(stderr,"packet udp\n");
     send_packet_to_client(packet_to_send,SIZE_ETHERNET+ip->ip_len,UDP);
     return;
   case IPPROTO_ICMP:
-    //icmp=(struct sniff_icmp*)(packet+SIZE_ETHERNET+size_ip);	
+    fprintf(stderr,"packet icmp\n");
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,ICMP);
     return;
   case IPPROTO_IP:
+    fprintf(stderr,"packet ip\n");
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,IP);
     return;
   case IPPROTO_ARP:
+    fprintf(stderr,"packet arp\n");
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,ARP);
     return;
   case IPPROTO_RARP:
+    fprintf(stderr,"packet rarp\n");
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,RARP);
+    return;
+  case IPPROTO_IGMP:
+    fprintf(stderr,"packet igmp\n");
+    send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,IGMP);
     return;
   default:
     return;
@@ -120,7 +128,7 @@ void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *pa
 void check_protocole(char * protocole){
   char * name = protocole;
   /*si le protocole n'est pas ip ou tcp ou udp ou icmp, il y a erreur*/ 
-  if ((strcmp(name,"ip") != 0) && (strcmp(name,"udp") != 0) && (strcmp(name,"tcp") != 0)&& (strcmp(name,"icmp") != 0) && (strcmp(name,"arp") != 0) && (strcmp(name,"rarp") != 0) ){
+  if ((strcmp(name,"ip") != 0) && (strcmp(name,"udp") != 0) && (strcmp(name,"tcp") != 0) && (strcmp(name,"icmp") != 0) && (strcmp(name,"igmp") != 0) && (strcmp(name,"arp") != 0) && (strcmp(name,"rarp") != 0) ){
     
     fprintf(stderr,"le serveur ne prend pas en charge ce protocole\n");
     exit(EXIT_FAILURE);
