@@ -153,35 +153,35 @@ void dir_file (int clientfd, char *pathname)
  * \fn sniff
  * \brief inscrit l'ID du client dans le tab des protocoles correspondant.
  * \param 'clientfd' est un socket connecte a un client.
- * \param 'pathname' est le nom du protocole a filter.
+ * \param 'protocole' est le nom du protocole a sniffer.
  */
-void sniff(int clientfd, char * pathname){
+void sniff(int clientfd, char * protocole){
 
   struct answer answer_sniff;
   fprintf(stderr,"server.c sniff 1\n");   
   //si le protocole existe, on envoie l'ACK et on ajoute l'ID du client dans le tab correspondant
-  if ((strcmp (pathname, "ip") == 0)){
+  if ((strcmp (protocole, "ip") == 0)){
     if(add_client(IP,MAXCLIENTS,clientfd) <0){
       fprintf(stderr,"erreur add client a ip : requete sniff");
       exit(1);
     }
   }
 
-  else if ((strcmp (pathname, "tcp") == 0)){
+  else if ((strcmp (protocole, "tcp") == 0)){
     //add client 
     if(add_client(TCP,MAXCLIENTS,clientfd) <0){
       fprintf(stderr,"erreur add client a tcp : requete sniff");
       exit(1);
     }
   }
-  else if ((strcmp (pathname, "udp") == 0)){
+  else if ((strcmp (protocole, "udp") == 0)){
     //add client
     if(add_client(UDP,MAXCLIENTS,clientfd) <0){
       fprintf(stderr,"erreur add client a udp : requete sniff");
       exit(1);
     }
   }
-  else if ((strcmp (pathname, "icmp") == 0))
+  else if ((strcmp (protocole, "icmp") == 0))
     {
       //add client
       if(add_client(ICMP,MAXCLIENTS,clientfd) <0){
