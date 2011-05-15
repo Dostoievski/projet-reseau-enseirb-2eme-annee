@@ -13,7 +13,7 @@
 #include <time.h>
 
 /* filter expression, nothing to compile */
-char filter_exp[] = " ip or vlan"; 
+char filter_exp[] = " ip or arp or rarp"; 
 
 
 double get_time() {
