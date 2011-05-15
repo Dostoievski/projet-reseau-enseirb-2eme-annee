@@ -302,7 +302,7 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
 	  printf("   Protocol: RARP\n");
 	  return;
 	default:
-	  printf("   Protocol: unknown\n");
+	  //printf("   Protocol: unknown\n");
 	  return;
 	}
 	
