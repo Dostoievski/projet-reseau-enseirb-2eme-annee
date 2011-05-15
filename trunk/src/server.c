@@ -153,7 +153,7 @@ void dir_file (int clientfd, char *pathname)
  * \fn sniff
  * \brief inscrit l'ID du client dans le tab des protocoles correspondant.
  * \param 'clientfd' est un socket connecte a un client.
- * \param 'pathname' est le nom du fichier ou repertoire a sniffer.
+ * \param 'pathname' est le nom du protocole a filter.
  */
 void sniff(int clientfd, char * pathname){
 
