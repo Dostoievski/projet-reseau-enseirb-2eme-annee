@@ -127,8 +127,8 @@ struct sniff_icmp{
 void count_protocoles_stats();
 
 /*strores protocoles occurence stats*/
-void
-table_init ( int *, int);
+//void
+//table_init ( int *, int);
 
 /*increments protocoles occurences*/
 void count_protocoles_inc(int);

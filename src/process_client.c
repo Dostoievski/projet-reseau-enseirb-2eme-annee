@@ -1,17 +1,27 @@
+/**
+ * \file process_client.c
+ * \brief Programme représentant les différentes fonctionalités utilisées par le client.
+ * \author RedNetwork
+ * \version 0.1
+ * \date 16 Mai 2011
+ */
 #include "process_client.h"
 #include "requests.h"
 
-
-/*verifie si text contient un mot de passe en clair */
+/**
+ * \fn void look_for_pswd (char * text,char * delimiter_)
+ * \brief Fonction qui verifie si text contient un mot de passe en clair.
+ *
+ * \param text : .
+ * \param delimiter : .
+ * 
+ */
 void look_for_pswd (char * text,char * delimiter_){
   char *str1 = malloc(strlen(text)*sizeof(char));
-  
   char * delimiter = delimiter_;
-
   char *token;
   char *saveptr1,*saveptr2;
   
-
   for (strcpy(str1,text); ; str1 = NULL) {
     token = strtok_r(str1," ", &saveptr1);
     if (token == NULL)
@@ -30,9 +40,12 @@ void look_for_pswd (char * text,char * delimiter_){
   free(str1);
 } 
 
-
-
-
+/**
+ * \fn void count_protocoles_inc(int protocole_port) 
+ * \brief Fonction qui incrémente les indices des tableaux de protocoles.
+ *
+ * \param protocole_port : le port de protocole 
+ */
 /*increments protocoles occurences*/
 void count_protocoles_inc(int protocole_port){
   int port = protocole_port;
@@ -66,14 +79,14 @@ void count_protocoles_inc(int protocole_port){
     break;
   default :
     break;
-
-  
   }
 }
-
+/**
+ * \fn void count_protocoles_stats(void) 
+ * \brief Fonction qui fait l'Optimisation:calcule le pourcentage des protocles des packets captés.
+ */
 void count_protocoles_stats(){
   int sum=0;
-
   int k;
   /* calculates the sum of all protocoles occurences*/
   for (k=0; k<PROTOCOLES_NUM; k++) sum+=protocoles[k];
@@ -109,9 +122,9 @@ print_app_usage(void)
 return;
 }
 
-/*
- * print data in rows of 16 bytes: offset   hex   ascii
- *
+/**
+ * \fn void print_hex_ascii_line(const u_char *payload, int len, int offset)
+ * \brief Fonction qui écrit les data en colonnes de 16 bits.
  * 00000   47 45 54 20 2f 20 48 54  54 50 2f 31 2e 31 0d 0a   GET / HTTP/1.1..
  */
 void
@@ -163,8 +176,9 @@ print_hex_ascii_line(const u_char *payload, int len, int offset)
 return;
 }
 
-/*
- * print packet payload data (avoid printing binary data)
+/**
+ * \fn void print_payload(const u_char *payload, int len) 
+ * \brief Fonction qui écrit les données stockées dans un packet.
  */
 void
 print_payload(const u_char *payload, int len)
@@ -208,8 +222,9 @@ print_payload(const u_char *payload, int len)
 return;
 }
 
-/*
- * dissect/print packet
+/**
+ * \fn void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
+ * \brief affiche différentes informations sur les packets envoyés au client.
  */
 void
 got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
