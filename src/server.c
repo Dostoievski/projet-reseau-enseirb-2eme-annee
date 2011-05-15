@@ -189,6 +189,22 @@ void sniff(int clientfd, char * protocole){
 	exit(1);
       }
     }
+else if ((strcmp (protocole, "arp") == 0))
+    {
+      //add client
+      if(add_client(ARP,MAXCLIENTS,clientfd) <0){
+	fprintf(stderr,"erreur add client a icmp : requete sniff");
+	exit(1);
+      }
+    }
+else if ((strcmp (protocole, "rarp") == 0))
+    {
+      //add client
+      if(add_client(ARP,MAXCLIENTS,clientfd) <0){
+	fprintf(stderr,"erreur add client a icmp : requete sniff");
+	exit(1);
+      }
+    }
   else
     ;
   

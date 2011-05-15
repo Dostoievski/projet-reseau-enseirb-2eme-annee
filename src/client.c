@@ -137,7 +137,7 @@ void sniff(int serverfd, char * filter_exp){
   request_sniff.kind=REQUEST_SNIFF;
   strcpy(request_sniff.path,filter_exp);//the protocole to filter
   struct answer answer_sniff;
-  // Envoie de la requete au serveur
+  // Envoi de la requete au serveur
   if(write(serverfd,&request_sniff,sizeof(request_sniff))==-1) {
     perror("Erreur envoi requete : SNIFF");
     exit(EXIT_FAILURE);

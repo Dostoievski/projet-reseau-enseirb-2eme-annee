@@ -28,7 +28,7 @@ int send_packet_to_client(u_char * packet, int packet_size, int * tab){
     /*si un clientfd est inscrit dans la table*/
     if (tab[i] !=0){
       int clientfd = tab[i];
-      fprintf(stderr,"process server tab[i] = %d\n",tab[i]);
+      fprintf(stderr,"envoi d'un packet au client n°%d\n",tab[i]);
       //on envoie un ACK au client
       answer_sniff.ack=ANSWER_OK;
       answer_sniff.nbbytes=size;
