@@ -83,34 +83,49 @@ void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *pa
     return;
   }
 
-  /* determine protocol */	
+  /* Determine what type of ethernet packet this is. */
+  switch (ntohs(ethernet->ether_type)) {
+    /* IP */
+  case ETHERTYPE_IP:
+    send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,IP);
+    break;
+      /* ARP */
+  case ETHERTYPE_ARP:
+    fprintf(stderr,"packet arp\n");
+    send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,ARP);
+       break;
+  default:
+    return;
+  }
+  
+  /* determine what type of ip protocole this is */	
   switch(ip->ip_p) {
   case IPPROTO_TCP:
-    fprintf(stderr,"packet tcp\n");
+    fprintf(stderr,"packet ip/tcp\n");
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,TCP);
     break;
   case IPPROTO_UDP:
-    fprintf(stderr,"packet udp\n");
+    fprintf(stderr,"packet ip/udp\n");
     send_packet_to_client(packet_to_send,SIZE_ETHERNET+ip->ip_len,UDP);
     return;
   case IPPROTO_ICMP:
-    fprintf(stderr,"packet icmp\n");
+    fprintf(stderr,"packet ip/icmp\n");
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,ICMP);
     return;
-  case IPPROTO_IP:
-    fprintf(stderr,"packet ip\n");
-    send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,IP);
-    return;
-  case IPPROTO_ARP:
-    fprintf(stderr,"packet arp\n");
-    send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,ARP);
-    return;
-  case IPPROTO_RARP:
-    fprintf(stderr,"packet rarp\n");
-    send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,RARP);
-    return;
+  /* case IPPROTO_IP: */
+  /*   fprintf(stderr,"packet ip\n"); */
+  /*   send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,IP); */
+  /*   return; */
+  /* case IPPROTO_ARP: */
+  /*   fprintf(stderr,"packet arp\n"); */
+  /*   send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,ARP); */
+  /*   return; */
+  /* case IPPROTO_RARP: */
+  /*   fprintf(stderr,"packet rarp\n"); */
+  /*   send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,RARP); */
+  /*   return; */
   case IPPROTO_IGMP:
-    fprintf(stderr,"packet igmp\n");
+    fprintf(stderr,"packet ip/igmp\n");
     send_packet_to_client(packet_to_send ,SIZE_ETHERNET+ip->ip_len,IGMP);
     return;
   default:

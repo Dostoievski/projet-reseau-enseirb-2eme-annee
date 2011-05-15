@@ -257,6 +257,36 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
 		return;
 	}
 
+	
+	/* Determine what type of ethernet packet this is. */
+	switch (ntohs(ethernet->ether_type)) {
+	  /* IP */
+	case ETHERTYPE_IP:
+	  printf("   Protocole ethernet: IP\n");
+	  break;
+	  /* ARP */
+	case ETHERTYPE_ARP:
+	  //traitement ARP / RARP
+	  printf("   Protocole ethernet: ARP\n");
+	  struct sniff_arp *arp = (struct arphdr *)(packet + sizeof(struct ether_header));
+	  
+	/* print source and destination IP addresses */
+	  printf("         Source MAC: %s\n", htons(arp->source_add));
+	  printf("         DEST   MAC: %s\n", htons(arp->dest_add));
+	/* check whether this is an arp request or reply*/
+	if (htons(arp->opcode) == ARP_REQUEST)
+	  printf("         ARP type : REQUEST\n");
+	else if (htons(arp->opcode) == ARP_REPLY)
+	  printf("         ARP type : REPLY\n");
+	else ;
+	  break;
+	  /* fin traitement arp*/
+	default:
+	  return;
+	}
+	
+
+
 	/* print source and destination IP addresses */
 	printf("       From: %s\n", inet_ntoa(ip->ip_src));
 	printf("         To: %s\n", inet_ntoa(ip->ip_dst));
@@ -271,7 +301,7 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
 	  return;
 	case IPPROTO_ICMP:
 	  printf("   Protocol: ICMP\n");
-	  //traitement icmp
+	  /*traitement icmp */
 	  icmp=(struct sniff_icmp*)(packet+SIZE_ETHERNET+size_ip);	
 	  switch (icmp->itype){
 	  case ICMP_UNREACH :
@@ -292,17 +322,8 @@ got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
 	  default:
 	    return;
 	  }
-	case IPPROTO_IP:
-	  printf("   Protocol: IP\n");
-	  return;
-	case IPPROTO_ARP:
-	  printf("   Protocol: ARP\n");
-	  return;
-	case IPPROTO_RARP:
-	  printf("   Protocol: RARP\n");
-	  return;
+	  /*fin traitement icmp */
 	default:
-	  //printf("   Protocol: unknown\n");
 	  return;
 	}
 	

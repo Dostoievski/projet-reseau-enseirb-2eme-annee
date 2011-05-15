@@ -17,11 +17,15 @@
 #include <netdb.h>
 #include <errno.h>
 #include <sys/wait.h>
-
+#include <net/ethernet.h>
+//#include <netinet/ip.h>
 
 /* some protocoles*/
 #define IPPROTO_ARP 1544
 #define IPPROTO_RARP 13696
+
+
+
 
 /*usual application protocoles*/
 #define  HTTP 1
@@ -45,8 +49,10 @@ int protocoles[PROTOCOLES_NUM];
 /* ethernet headers are always exactly 14 bytes [1] */
 #define SIZE_ETHERNET 14
 
+#define IP_ALEN 4
+
 /* Ethernet addresses are 6 bytes */
-#define ETHER_ADDR_LEN	6
+//#define ETHER_ADDR_LEN	6
 
 /* Ethernet header */
 struct sniff_ethernet {
@@ -122,6 +128,27 @@ struct sniff_icmp{
 #define	ICMP_ECHO		8		/* echo service */
 #define	ICMP_TIMXCEED		11		/* time exceeded, code: */
 #define	ICMP_TSTAMP		13		/* timestamp request */
+
+
+// ARP Header struct
+struct sniff_arp
+{
+u_short hw_type;            // hardware type
+u_short proto_type;         // protocol type
+char ha_len;               // hardware address length
+char pa_len;                 // protocol address length
+u_short opcode;                      // arp opcode
+unsigned char source_add[ETH_ALEN];  // source mac
+unsigned char source_ip[IP_ALEN];   // source ip
+unsigned char dest_add[ETH_ALEN];   // destination mac
+unsigned char dest_ip[IP_ALEN];   // destination ip
+};
+
+
+#define	ARP_REQUEST		1
+#define	ARP_REPLY		1
+
+
 
 /* prints protocoles stats*/
 void count_protocoles_stats();
