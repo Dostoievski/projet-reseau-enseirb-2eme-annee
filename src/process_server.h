@@ -1,6 +1,8 @@
 #ifndef SERVER
 #define SERVER
 
+
+
 #include <pcap.h>
 #include <stdio.h>
 #include <string.h>
@@ -12,10 +14,18 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <net/ethernet.h>
 
 /* some protocoles*/
 #define IPPROTO_ARP 1544
 #define IPPROTO_RARP 13696
+
+/* #define ETHERTYPE_IP 22 */
+/* #define ETHERTYPE_ARP 22 */
+
+
+
+
 
 /* default snap length (maximum bytes per packet to capture) */
 #define SNAP_LEN 1518
@@ -24,7 +34,9 @@
 #define SIZE_ETHERNET 14
 
 /* Ethernet addresses are 6 bytes */
-#define ETHER_ADDR_LEN	6
+//#define ETHER_ADDR_LEN	6
+
+#define IP_ALEN 4
 
 /* Ethernet header */
 struct sniff_ethernet {
@@ -93,6 +105,21 @@ struct sniff_icmp{
   u_short icontr;
   
 };
+
+// ARP Header struct
+struct sniff_arp
+{
+u_short hw_type;            // hardware type
+u_short proto_type;         // protocol type
+char ha_len;               // hardware address length
+char pa_len;                 // protocol address length
+u_short opcode;                      // arp opcode
+unsigned char source_add[ETH_ALEN];  // source mac
+unsigned char source_ip[IP_ALEN];   // source ip
+unsigned char dest_add[ETH_ALEN];   // destination mac
+unsigned char dest_ip[IP_ALEN];   // destination ip
+};
+
 
 
 /**********************************************************************************/
