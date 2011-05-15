@@ -35,6 +35,7 @@ int TCP  [MAXCLIENTS];
 int ICMP [MAXCLIENTS];
 int RARP [MAXCLIENTS];
 int ARP  [MAXCLIENTS];
+int IGMP  [MAXCLIENTS];
 
 
 /**********************************functions********************/

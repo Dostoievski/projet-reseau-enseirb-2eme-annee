@@ -13,7 +13,7 @@
 #include <time.h>
 
 /* filter expression, nothing to compile */
-char filter_exp[] = " ip or tcp or udp or icmp or arp or rarp"; 
+char filter_exp[] = " ip"; 
 
 
 double get_time() {
@@ -101,15 +101,15 @@ void* start_sniffing(void * num)
     exit(EXIT_FAILURE);
   }
   
-  /* on envoie au client 2 packets chaque 5 secs*/
+  /* on envoie au client 1 packet chaque 1 sec*/
   double t1 = get_time();
   double t2 = get_time();
   while (1){
-    if (t2 - t1 < 2.0) 
+    if (t2 - t1 < 1.0) 
       t2 = get_time();
     else {
   /* now we can set our callback function */
-      pcap_loop(handle, 2, got_packet, NULL);
+      pcap_loop(handle, 1, got_packet, NULL);
       t1 = t2;
     }
   }
