@@ -1,0 +1,9 @@
+digraph G
+{
+  edge [fontname="FreeSans.ttf",fontsize="10",labelfontname="FreeSans.ttf",labelfontsize="10"];
+  node [fontname="FreeSans.ttf",fontsize="10",shape=record];
+  rankdir=LR;
+  Node1 [label="got_packet",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node2 [label="send_packet_to_client",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$process__server_8c.html#a46fccb859d2f35c490cadf867c7318a4",tooltip="Fonction qui envoye un packet à un client inscrit dans un tableau de protocole."];
+}

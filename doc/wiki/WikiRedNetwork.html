@@ -1,0 +1,180 @@
+<meta http-equiv="Context-Type" content="text/html; charset=UTF-8">
+<DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>RedNetwork : Le meilleur opensource</title>
+<meta http-equiv="Description" content="">
+</meta>
+<link rel="icon" href="favicon.ico" sizes="16x16" />
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link href="style.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body background="rose.jpeg"></body>
+<div id="container">
+  <div id="header">
+    <h1><a href="/"><center><img src="http://www.xtera.com/ContentImages/rednetwork.JPG" alt="RedNetwork : logiciel client FTP libre et gratuit" border="1" /></center></a></h1>
+
+  </div>
+  <!-- /header -->
+  <div id="sidebar">
+    <div >
+		<div align="left">
+			<h3>Ma&icirc;triser RedNetwork :</h3>
+			<ul>
+
+				<li><a href="docDev.html" >Documentation développeur</a></li>
+				<li><a href="gestion.html" >Gestion de projet</a></li>
+
+				<li><a href="http://code.google.com/p/projet-reseau-enseirb-2eme-annee/" >D&eacute;pot du groupe </a></li>
+
+			</ul>
+		
+
+			<p class="Style4"><h3><strong>Approfondissement</strong></h3></p>
+			<ul>
+				<li><a href="optimisation.html">Optimisation (analyse)</a> </li>
+				<li><a href="protection.html">Protection, sécurité</a> </li>
+				<li><a href="reparation.html">Réparation</a> </li>
+			</ul>
+			<p class="Style4"><h3><strong>Liens utiles</strong></h3></p>
+			<ul>
+				<li><a href="http://code.google.com/p/projet-reseau-enseirb-2eme-annee/source/browse/">T&eacute;l&eacute;chargement</a> </li>
+				<li><a href="html/index.html">Documentation à l'aide de Doxygen</a> </li>
+				<li><a href="http://uuu.enseirb-matmeca.fr/~hkhalife/projet_reseaux/">Sujet du projet</a> </li>
+				<li><a href="http://code.google.com/p/projet-reseau-enseirb-2eme-annee/w/list">Listes des pages wiki de RedNetwork </a> </li>
+
+			</ul>
+		</div>
+	</div>
+
+			<p><img src="http://t0.gstatic.com/images?q=tbn:ANd9GcRqHOYun2ITnHSgF-blam4L86BWGoQRGkEm_Lvjqprac4HFfd32" alt="RedNetwork" width="192" height="312" align="right" /><span class="Style4"><strong>L'objectif de ce projet est de développer un outil d'analyse de trafic sur un réseau en temps réel. Cet outil sera paramétrable par l’utilisateur et permettra de remonter des alarmes dans le cas où des données suspectes sont détectées. L'outil doit aussi permettre de calculer des statistiques et de caractériser le comportement des utilisateurs du réseau.</strong> <br/>
+
+
+
+
+
+				.</span></p>
+
+			<p><strong>Première partie du projet : Définir le protocole entre le serveur et le client</strong></p>
+
+<p>Pour ce faire, deux solutions nous ont été avancées :
+
+<ul>Solution 1:
+
+   <li> -Le serveur écrit des fichiers contenant les paquets captés(on aura donc une liste des paquets). </li>
+
+   <li> -FTP like </li>
+
+Solution 2:
+
+   <li> -Le client fait une requête de préfiltrage au serveur. </li>
+
+   <li> -Le serveur capture les paquets correspondants et les écrit dans un fichier(un fichier par client). </li>
+
+   <li> -Le client récupère le fichier et l'analyse. </li>
+
+</ul>
+</p>
+<p>Solution choisie dans un premier temps :</p>
+
+<p>Nous avons opté pour la première solution.Pour ce qui concerne la première partie du projet, le travail se divise en deux étapes:
+
+<ul>1)Créer le serveur:
+
+    <li>-capturer des paquets </li>
+
+    <li>-écriture de ces paquets au format pcap dans des fichiers(par exemple un fichier est créé chauqe minute) </li>
+
+    <li>-partie connection avec le client: </li>
+
+<li>    -Sockets </li>
+
+<li>    -petit protocole List GET </li>
+</ul><ul>
+2)client:
+
+<li>    -partie connection avec le serveur: </li>
+
+    <li>-les sockets </li>
+
+    <li>- petit protocole List Get </li>
+
+    <li>-partie filtrage </li>
+
+    <li>-partie analyse </li>
+
+<p class="Style4"><strong><img src="http://t0.gstatic.com/images?q=tbn:ANd9GcThQTyDegFaA5utJukA8bgfCmKzBNDTmu_fMQ6wqRmZH_vYXIobdQ" alt="Download RedNetwork" width="200" height="198" align="right" />Description de la plateforme de développement :</strong></p>
+
+			<ul>
+				<li class="Style4">Linux,
+					Emacs</li>
+
+</ul>
+<p class="Style4"><strong>Outils et librairies :</strong></p>
+
+			<ul>
+				<li class="Style4">Bibliothèque PCAP</li>
+
+	</ul>			
+
+<p class="Style4"><strong>Les fonctions 
+				principales de RedNetwork sont :</strong></p>
+<ul>
+<li>socket entre 1 serveur et 1 client (éventuellement plusieurs clients (fork(processus) ou thread http://www.life.fr/~marquet/ens/sem/tubes/tubes002.html)</li>
+<li> partie de capture serveur</li>
+   <li> partie de filtrage client (Le filtrage n'a pas besoin d'analyser les données du paquet, uniquement les entêtes)</li>
+    <li> partie d'analyse client (L'analyse a besoin de récupérer et lire dans les données du paquet (exemple : mot de passe) </li>
+</ul>
+
+
+<p>Ce qu'il restait à faire était donc:
+
+    <li> multi client (fichier ds un premier temps)</li>
+    <li> multi-client : temps réel </li>
+<li><li>
+    ->1ère possibilité : le serveur envoie TOUS les paquets et le client les reçoit et fait le filtrage et l'analyse. </li>
+
+    <li> ->2ème possibilité : le serveur fait le filtrage personnalisé par client, le client fait l'analyse des paquets qu'il va recevoir .</li> 
+</li>
+<p>Réparation : </p>
+Dans cette partie, il est question d'afficher des messages d'erreurs d'ICMP (traceroute, TTL croissants).
+
+<p>Optimisation :</p>
+
+Cette partie avait pour but d'afficher des taux de protocoles sous forme de liste avec des pourcentages :
+<ul> 
+    <li>* -----------P2P : 98% </li>
+    <li>* -----------HTTP : 67% </li>
+    <li>* -----------POP3 : 34% </li>
+    <li>* -----------SSH : 62 % </li>
+    <li>* -----------FTP : ..</li>
+    <li>* -----------SSH :</li>
+    <li>* -----------IMAP : </li>
+
+</ul>
+
+<p>Protection :</p>
+
+Cette partie avait pour but d'afficher une alerte quand un utilisateur envoie son mot de passe en clair par exemple : 
+<ul>
+    <li> * RECOMMANDE : en FTP (en mode nn sécurisé, le plus simple)<li/>
+    <li>* -----------en HTTP<li/>
+    <li>* -----------en POP3 (avec Thunderbird)<li/>
+    <li>* -----------en IMAP <li/>
+
+</ul> 
+   		
+			<h3 style="text-align:center"> <a href="http://code.google.com/p/projet-reseau-enseirb-2eme-annee/source/browse/">&gt;&gt; !T&eacute;l&eacute;charger la derniere version de RedNetwork! &lt;&lt; </a></h3>
+	<p align="center">
+				(<a href="http://www.ubuntu.com/">linux</a> <img src="http://t3.gstatic.com/images?q=tbn:ANd9GcSY_r8RQ5th-5lNcvxb9SuPyTdmjfOV8bNQOg9zdXPEVxSR4tVL
+" alt="RedNetwork linux" width="80" height="80" />, 
+				<a href="http://code.google.com/p/projet-reseau-enseirb-2eme-annee/source/browse/">Code source</a>)
+			</p>
+
+
+
+</script></body>
+
+</html>
+<html><body></body></html>
