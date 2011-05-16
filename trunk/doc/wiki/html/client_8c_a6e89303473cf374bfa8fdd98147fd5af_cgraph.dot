@@ -1,0 +1,21 @@
+digraph G
+{
+  edge [fontname="FreeSans.ttf",fontsize="10",labelfontname="FreeSans.ttf",labelfontsize="10"];
+  node [fontname="FreeSans.ttf",fontsize="10",shape=record];
+  rankdir=LR;
+  Node1 [label="sniff",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node2 [label="check_answer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$client_8c.html#ad3dbd022fc344c02c9d1dfc6e6482a92",tooltip="Fonction qui vérifie la réponse réçue par le client."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node3 [label="count_protocoles_stats",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$process__client_8c.html#ac4b26ab734a61aa4d66e8fccb5e0f559",tooltip="Fonction qui fait l&#39;Optimisation:calcule le pourcentage des protocles des packets captés..."];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node4 [label="got_packet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$process__client_8c.html#aa1c8f115e170bd8d3f22f13db282ca44",tooltip="affiche différentes informations sur les packets envoyés au client."];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node5 [label="count_protocoles_inc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$process__client_8c.html#a912ca005ac29847305efc39bf1001cff",tooltip="Fonction qui incrémente les indices des tableaux de protocoles."];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node6 [label="print_payload",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$process__client_8c.html#ab48bc0458b0c2e1efb27f09c5ec679bb",tooltip="Fonction qui écrit les données stockées dans un packet."];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node7 [label="print_hex_ascii_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$process__client_8c.html#a1c7647ec15cd2519ed93c9de272870d8",tooltip="Fonction qui écrit les data en colonnes de 16 bits. 00000 47 45 54 20 2f 20 48 54 54 50 2f 31 2e 31 0..."];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node8 [label="look_for_pswd",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$process__client_8c.html#a2473427bf4cebe6d8318470633429c3c",tooltip="Fonction qui verifie si text contient un mot de passe en clair."];
+}

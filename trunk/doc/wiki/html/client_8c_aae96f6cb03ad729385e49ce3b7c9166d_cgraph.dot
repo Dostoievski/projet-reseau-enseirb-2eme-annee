@@ -1,0 +1,11 @@
+digraph G
+{
+  edge [fontname="FreeSans.ttf",fontsize="10",labelfontname="FreeSans.ttf",labelfontsize="10"];
+  node [fontname="FreeSans.ttf",fontsize="10",shape=record];
+  rankdir=LR;
+  Node1 [label="dir_file",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node2 [label="check_answer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$client_8c.html#ad3dbd022fc344c02c9d1dfc6e6482a92",tooltip="Fonction qui vérifie la réponse réçue par le client."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node3 [label="copy_all_bytes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$common_8c.html#a0522f027465018045afb357a89a7e56c",tooltip="Copie tous les octets depuis le descripteur `from&#39; sur le descripteur `to&#39;. La lecture est faite par bloc de MSGSIZE octet. L&#39;ecriture s&#39;attend a ne pas pouvoir tout ecrire d&#39;un seul coup."];
+}
