@@ -25,4 +25,4 @@ process_server.o : process_server.c process_server.h requests.h
 process_client.o : process_client.c process_client.h requests.h
 
 clean:
-	-rm -f $(EXE) *.o *~
+	-rm -f $(EXE) *.o*  *#  *~ log

@@ -146,16 +146,12 @@ unsigned char dest_ip[IP_ALEN];   // destination ip
 
 
 #define	ARP_REQUEST		1
-#define	ARP_REPLY		1
+#define	ARP_REPLY		2
 
 
 
 /* prints protocoles stats*/
 void count_protocoles_stats();
-
-/*strores protocoles occurence stats*/
-//void
-//table_init ( int *, int);
 
 /*increments protocoles occurences*/
 void count_protocoles_inc(int);
