@@ -1,0 +1,1 @@
+**L’objectif** de ce projet est de développer un outil d’analyse de trafic sur un réseau en **temps réel**. **Cet outil sera paramétrable** par l’utilisateur et permettra de remonter des alarmes dans le cas où des données suspectes sont détectées. L’outil doit aussi permettre de **calculer des statistiques** et de caractériser le comportement des utilisateurs du réseau.
